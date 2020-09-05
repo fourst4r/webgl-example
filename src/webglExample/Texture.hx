@@ -1,9 +1,13 @@
 package webglExample;
 import js.html.webgl.Texture;
+import js.html.ImageElement;
+import js.html.Image;
 import js.html.webgl.UniformLocation;
 import js.html.webgl.RenderingContext;
+import js.lib.Promise;
 class Texture{
-    var data: 
+    var gl: RenderingContext;
+    var data: js.html.webgl.Texture;
     public function new( gl: js.html.webgl.RenderingContext, image: ImageElement ){
         var texture = gl.createTexture();
         // Set the newly created texture context as active texture
@@ -12,12 +16,15 @@ class Texture{
         var rgba = RenderingContext.RGBA;
         var _2d = RenderingContext.TEXTURE_2D;
         var linear = RenderingContext.LINEAR;
-        gl.texImage2D( RenderingContext.TEXTURE_2D, 0, rgba, rgba, RenderingContext.UNSIGNED_BYTE, image );
+        var mag = RenderingContext.TEXTURE_MAG_FILTER;
+        var min = RenderingContext.TEXTURE_MIN_FILTER;
+        var unsigned = RenderingContext.UNSIGNED_BYTE;
+        gl.texImage2D( _2d, 0, rgba, rgba, unsigned, image );
         // Set filtering methods
         // Very often shaders will query the texture value between pixels,
         // and this is instructing how that value shall be calculated
-        gl.texParameteri( _2d, RenderingContext.TEXTURE_MAG_FILTER, linear );
-        gl.texParameteri( _2d, RenderingContext.TEXTURE_MIN_FILTER, linear );
+        gl.texParameteri( _2d, mag, linear );
+        gl.texParameteri( _2d, min, linear );
         data = texture;
         this.gl = gl;
     }
@@ -33,7 +40,7 @@ class Texture{
         // uniform = i
     }
     public inline
-    function activateTexture( texture: Texture, imageIndex: Int ){
+    function activateTexture( texture: js.html.webgl.Texture, imageIndex: Int ){
         var _2D = RenderingContext.TEXTURE_2D;
         switch( imageIndex ){
             case 0: gl.activeTexture( RenderingContext.TEXTURE0 );
@@ -47,13 +54,13 @@ class Texture{
         }
         gl.bindTexture( _2D, texture );
     }
-    public static function load( gl: RenderContext, url: String) {
-      return new Promise(function (resolve) {
-        var image = new Image()
-        image.onload = function () {
-          resolve(new Texture(gl, image))
-        }
-        image.src = url
-      })
+    public static function load( gl: RenderingContext, url: String) {
+        return new Promise( function( resolve, reject ) {
+            var image = new Image();
+            image.onload = function () {
+                resolve( new Texture( gl, image ) );
+            }
+            image.src = url;
+      });
     }
 }

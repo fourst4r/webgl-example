@@ -9,13 +9,16 @@ class Camera {
     }
     public inline
     function setOthographic( width: Float, height: Float, depth: Float ){
-        projection = new Transformation()
+        projection = new Transformation();
         projection.fields[0]  = 2 / width;
         projection.fields[5]  = 2 / height;
         projection.fields[10] = -2 / depth;
     }
     public inline
-    function setPersepctive( verticalFov: Float, aspectRatios: Float, near: Float, far: Float ){
+    function setPersepctive( verticalFov: Float
+                           , aspectRatio: Float
+                           , near:        Float
+                           , far:         Float ){
         var height_div_2n = Math.tan( verticalFov * Math.PI / 360 );
         var width_div_2n  = aspectRatio * height_div_2n;
         projection = new Transformation();
@@ -27,7 +30,7 @@ class Camera {
         projection.fields[15] = 0;
     }
     public inline
-    function getInversePostion(){
+    function getInversePosition(): Transformation {
         var orig = this.position.fields;
         var dest = new Transformation();
         var x = orig[12];
@@ -35,16 +38,16 @@ class Camera {
         var z = orig[14];
         // Transpose the rotation matrix
         for( i in 0...3 ){
-            for( j in 0..3 ){
-                dest.fields[i * 4 + j] = orig[i + j * 4];
+            for( j in 0...3 ){
+                dest.fields[ i * 4 + j ] = orig[ i + j * 4 ];
             }
         }
         
         // Translation by -p will apply R^T, which is equal to R^-1
-        return dest.translate(-x, -y, -z)
+        return dest.translate( -x, -y, -z );
     }
     public inline
-    function useCamera( shaderProgram ){
+    function useCamera( shaderProgram: ShaderProgram ){
        projection.sendToGpu( shaderProgram.gl, shaderProgram.projection );
        getInversePosition().sendToGpu( shaderProgram.gl, shaderProgram.view );
     }

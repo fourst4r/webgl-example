@@ -2,16 +2,14 @@ package webglExample;
 
 import js.html.CanvasElement;
 import js.html.webgl.RenderingContext;
-import webglExmaple;
-
+import js.html.webgl.Shader;
 class Renderer {
     var gl: RenderingContext;
-    var shader: 
+    var shaderProgram: ShaderProgram;
     public function new( canvas: CanvasElement ){
-        var gl = canvas.getContextWebGL();
+        gl = canvas.getContextWebGL();
         gl.enable( RenderingContext.DEPTH_TEST );
-        this.gl = gl;
-        this.shader = null;
+        shaderProgram = null;
     }
     public inline
     function setClearColor( red: Float, green: Float, blue: Float ){
@@ -22,20 +20,20 @@ class Renderer {
       return gl;
     }
     public inline 
-    function setShader( shader ){
-        this.shader = shader;
+    function setShader( shaderProgram: ShaderProgram ){
+        this.shaderProgram = shaderProgram;
     }
     public inline
     function render( camera: Camera, light: Light, objects: Array<Mesh> ){
         gl.clear( RenderingContext.COLOR_BUFFER_BIT | RenderingContext.DEPTH_BUFFER_BIT );
-        if( shader == null ) return;
-        shader.useShader();
-        light.useLight();
-        camera.useCamera();
+        if( shaderProgram == null ) return;
+        shaderProgram.useShader();
+        light.useLight( shaderProgram );
+        camera.useCamera( shaderProgram );
         var mesh: Mesh;
         for( i in 0...objects.length ){
             mesh = objects[ i ];
-            mesh.draw( shader );
+            mesh.draw( shaderProgram );
         }
     }
 }

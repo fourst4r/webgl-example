@@ -1,16 +1,16 @@
 package webglExample;
-import webglExample.Vector3;
+import webglExample.geometry.Vector3;
 
 class Light {
     public var lightDirection: Vector3; 
-    public var ambienLight = 0.3;
+    public var ambientLight = 0.3;
     public function new(){
         lightDirection = new Vector3( -1., -1., -1. );
     }
-    public function useLight( shaderProgram ){
+    public function useLight( shaderProgram: ShaderProgram ){
         var dir = lightDirection;
         var gl = shaderProgram.gl;
-        gl.unifrom3f( shaderProgram.lightDirection, dir.x, dir.y, dir.z );
-        gl.uniform1f( shaderProgram.ambientLight, ambiantLight );
+        gl.uniform3f( shaderProgram.lightDirection, dir.x, dir.y, dir.z );
+        gl.uniform1f( shaderProgram.ambientLight, ambientLight );
     }
 }

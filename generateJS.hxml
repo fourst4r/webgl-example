@@ -1,0 +1,8 @@
+-D doc-gen
+--macro include('webglExample')
+-cp src
+-main webglExample.upkeep.Doc
+--no-output
+
+-xml upkeep/js.xml
+-js foo
