@@ -41,7 +41,7 @@ class Mesh{
         gl.drawArrays( RenderingContext.TRIANGLES, 0, vertexCount );
     }
 
-    public inline
+    public static inline
     function load( gl: RenderingContext, modelUrl: String , textureUrl: String ){
         var geometry = loadOBJ( modelUrl );
         var texture = Texture.load( gl, textureUrl );

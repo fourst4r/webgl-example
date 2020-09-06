@@ -21,6 +21,7 @@ class Renderer {
     }
     public inline 
     function setShader( shaderProgram: ShaderProgram ){
+        trace('shader set');
         this.shaderProgram = shaderProgram;
     }
     public inline

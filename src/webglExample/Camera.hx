@@ -8,7 +8,7 @@ class Camera {
         
     }
     public inline
-    function setOthographic( width: Float, height: Float, depth: Float ){
+    function setOrthographic( width: Float, height: Float, depth: Float ){
         projection = new Transformation();
         projection.fields[0]  = 2 / width;
         projection.fields[5]  = 2 / height;

@@ -58,6 +58,7 @@ class Texture{
         return new Promise( function( resolve, reject ) {
             var image = new Image();
             image.onload = function () {
+                trace('resolving texture loading' + image );
                 resolve( new Texture( gl, image ) );
             }
             image.src = url;

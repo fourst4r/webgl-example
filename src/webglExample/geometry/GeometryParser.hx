@@ -66,6 +66,7 @@ function loadOBJ( url: String ) {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function(){
                 if ( xhr.readyState == XMLHttpRequest.DONE ){
+                    trace('geometryparser working');
                     resolve( objParser( xhr.responseText ) );
                 }
             };
