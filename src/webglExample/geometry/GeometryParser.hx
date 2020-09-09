@@ -27,17 +27,20 @@ function objParser( src: String ) {
                                        , Std.parseFloat( position.matched(3) )
                                        )
                            );
+                           trace(positions);
         } else if ( normal.match( line ) ){
             normals.push( new Vector3( Std.parseFloat( normal.matched(1) )
                                        , Std.parseFloat( normal.matched(2) )
                                        , Std.parseFloat( normal.matched(3) )
                                       )
                         );
+                        trace(normals);
         } else if ( uv.match( line ) ){
             uvs.push( new Vector2( Std.parseFloat( uv.matched(1) )
                                  , Std.parseFloat( uv.matched(2) )
                                  )
                     );
+                    trace(uvs);
         } else if ( face.match( line ) ){
             // Add new face
             var vertices = [];
@@ -47,6 +50,7 @@ function objParser( src: String ) {
                 var p0 = Std.parseInt( face.matched( i ) );
                 var p1 = Std.parseInt( face.matched( i+1 ) );
                 var p2 = Std.parseInt( face.matched( i+2 ) );
+                trace( p0 +','+p1+','+p2);
                 var position = positions[ p0 - 1 ];
                 var uv       = uvs[ p1 - 1 ];
                 var normal   = normals[ p2 - 1 ];

@@ -24,18 +24,30 @@ class WebGLExample {
         createCanvas();
         renderer = new Renderer( canvasGL );
         renderer.setClearColor( 100, 149, 237 );
-        var gl = renderer.getContext();
-        Mesh.load( gl, '/assets/sphere.obj', '/assets/diffuse.png' ).then( function (mesh) {
+        gl = renderer.getContext();
+        loadMesh();
+        loadShader();
+        orthogonalCameraSetup();
+        loop( 60 );
+    }
+    public inline
+    function loadMesh(){
+        Mesh.load( gl, '/assets/sphere.obj', '/assets/diffuse.png' ).then( function ( mesh) {
                 objects.push( mesh );
                 trace('mesh set');
         });
+    }
+    public inline
+    function loadShader(){
         ShaderProgram.load( gl, '/shaders/basic.vert', '/shaders/basic.frag' )
-             .then(function ( shader ) {
+             .then( function ( shader ) {
                renderer.setShader(shader);
                trace('shader setup');
-             });
+        });
+    }
+    public inline 
+    function orthogonalCameraSetup(){
         camera.setOrthographic( 16, 10, 10 );
-        loop( 60 );
     }
     public inline
     function createCanvas(){
@@ -59,9 +71,24 @@ class WebGLExample {
     function px( v: Int ): String {
         return Std.string( v + 'px' );
     }
+    var count = 0;
     function loop ( v: Float ): Void {
+        onceTraceAll();
         renderer.render( camera, light, objects );
-        camera.position = camera.position.rotateY( Math.PI / 120 );
+        rotateHorizontally();
         Browser.window.requestAnimationFrame( loop );
+    }
+    public inline
+    function rotateHorizontally(){
+        camera.position = camera.position.rotateY( Math.PI / 120 );
+    }
+    public inline
+    function onceTraceAll(){
+        if( count == 50 ){
+            trace( camera );
+            trace( light );
+            trace( objects );
+        } 
+        count++;
     }
 }

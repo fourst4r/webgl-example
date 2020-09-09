@@ -561,6 +561,7 @@ webglExample_Mesh.load = function(gl,modelUrl,textureUrl) {
 	var geometry = webglExample_geometry_GeometryParser_loadOBJ(modelUrl);
 	var texture = webglExample_Texture.load(gl,textureUrl);
 	return Promise.all([geometry,texture]).then(function(params) {
+		console.log("src/webglExample/Mesh.hx:47:","mesh promise all " + Std.string(params));
 		return new webglExample_Mesh(gl,params[0],params[1]);
 	});
 };
@@ -1647,10 +1648,10 @@ webglExample_Vbo.prototype = {
 	}
 };
 var webglExample_WebGLExample = function() {
+	this.count = 0;
 	this.objects = [];
 	this.light = new webglExample_Light();
 	this.camera = new webglExample_Camera();
-	var _gthis = this;
 	console.log("src/webglExample/WebGLExample.hx:23:","create WebGLExample");
 	this.canvasGL = window.document.createElement("canvas");
 	this.canvasGL.width = 800;
@@ -1665,17 +1666,20 @@ var webglExample_WebGLExample = function() {
 	style.position = "absolute";
 	this.renderer = new webglExample_Renderer(this.canvasGL);
 	this.renderer.gl.clearColor(0.392156862745098034,0.584313725490196112,0.929411764705882382,1.);
-	var gl = this.renderer.gl;
-	var gl1 = gl;
+	this.gl = this.renderer.gl;
+	var _gthis = this;
+	var gl = this.gl;
 	var geometry = webglExample_geometry_GeometryParser_loadOBJ("/assets/sphere.obj");
-	var texture = webglExample_Texture.load(gl1,"/assets/diffuse.png");
+	var texture = webglExample_Texture.load(gl,"/assets/diffuse.png");
 	Promise.all([geometry,texture]).then(function(params) {
-		return new webglExample_Mesh(gl1,params[0],params[1]);
+		console.log("src/webglExample/Mesh.hx:47:","mesh promise all " + Std.string(params));
+		return new webglExample_Mesh(gl,params[0],params[1]);
 	}).then(function(mesh) {
 		_gthis.objects.push(mesh);
-		console.log("src/webglExample/WebGLExample.hx:30:","mesh set");
+		console.log("src/webglExample/WebGLExample.hx:37:","mesh set");
 	});
-	var gl2 = gl;
+	var _gthis1 = this;
+	var gl1 = this.gl;
 	var url = "/shaders/basic.vert";
 	var url1 = "/shaders/basic.frag";
 	Promise.all([new Promise(function(resolve,reject) {
@@ -1697,12 +1701,12 @@ var webglExample_WebGLExample = function() {
 		xhr.open("GET",url1,true);
 		xhr.send(null);
 	})]).then(function(files) {
-		return new webglExample_ShaderProgram(gl2,files[0],files[1]);
+		return new webglExample_ShaderProgram(gl1,files[0],files[1]);
 	}).then(function(shader) {
-		var _this = _gthis.renderer;
+		var _this = _gthis1.renderer;
 		console.log("src/webglExample/Renderer.hx:24:","shader set");
 		_this.shaderProgram = shader;
-		console.log("src/webglExample/WebGLExample.hx:35:","shader setup");
+		console.log("src/webglExample/WebGLExample.hx:45:","shader setup");
 	});
 	var _this = this.camera;
 	_this.projection = new webglExample_Transformation();
@@ -1713,7 +1717,59 @@ var webglExample_WebGLExample = function() {
 };
 webglExample_WebGLExample.__name__ = true;
 webglExample_WebGLExample.prototype = {
-	createCanvas: function() {
+	loadMesh: function() {
+		var _gthis = this;
+		var gl = this.gl;
+		var geometry = webglExample_geometry_GeometryParser_loadOBJ("/assets/sphere.obj");
+		var texture = webglExample_Texture.load(gl,"/assets/diffuse.png");
+		Promise.all([geometry,texture]).then(function(params) {
+			console.log("src/webglExample/Mesh.hx:47:","mesh promise all " + Std.string(params));
+			return new webglExample_Mesh(gl,params[0],params[1]);
+		}).then(function(mesh) {
+			_gthis.objects.push(mesh);
+			console.log("src/webglExample/WebGLExample.hx:37:","mesh set");
+		});
+	}
+	,loadShader: function() {
+		var _gthis = this;
+		var gl = this.gl;
+		var url = "/shaders/basic.vert";
+		var url1 = "/shaders/basic.frag";
+		Promise.all([new Promise(function(resolve,reject) {
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function() {
+				if(xhr.readyState == 4) {
+					resolve(xhr.responseText);
+				}
+			};
+			xhr.open("GET",url,true);
+			xhr.send(null);
+		}),new Promise(function(resolve,reject) {
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function() {
+				if(xhr.readyState == 4) {
+					resolve(xhr.responseText);
+				}
+			};
+			xhr.open("GET",url1,true);
+			xhr.send(null);
+		})]).then(function(files) {
+			return new webglExample_ShaderProgram(gl,files[0],files[1]);
+		}).then(function(shader) {
+			var _this = _gthis.renderer;
+			console.log("src/webglExample/Renderer.hx:24:","shader set");
+			_this.shaderProgram = shader;
+			console.log("src/webglExample/WebGLExample.hx:45:","shader setup");
+		});
+	}
+	,orthogonalCameraSetup: function() {
+		var _this = this.camera;
+		_this.projection = new webglExample_Transformation();
+		_this.projection.fields[0] = 0.125;
+		_this.projection.fields[5] = 0.2;
+		_this.projection.fields[10] = -0.2;
+	}
+	,createCanvas: function() {
 		this.canvasGL = window.document.createElement("canvas");
 		this.canvasGL.width = 800;
 		this.canvasGL.height = 600;
@@ -1738,6 +1794,12 @@ webglExample_WebGLExample.prototype = {
 		return Std.string(v + "px");
 	}
 	,loop: function(v) {
+		if(this.count == 50) {
+			console.log("src/webglExample/WebGLExample.hx:88:",this.camera);
+			console.log("src/webglExample/WebGLExample.hx:89:",this.light);
+			console.log("src/webglExample/WebGLExample.hx:90:",this.objects);
+		}
+		this.count++;
 		var _this = this.renderer;
 		var camera = this.camera;
 		var light = this.light;
@@ -2024,6 +2086,126 @@ webglExample_WebGLExample.prototype = {
 		this.camera.position = output;
 		window.requestAnimationFrame($bind(this,this.loop));
 	}
+	,rotateHorizontally: function() {
+		var _this = this.camera.position;
+		var angle = Math.PI / 120;
+		if(angle == null) {
+			angle = 0.;
+		}
+		var c = Math.cos(angle);
+		var s = Math.sin(angle);
+		var mat = new webglExample_Transformation();
+		mat.fields[0] = c;
+		mat.fields[10] = c;
+		mat.fields[2] = -s;
+		mat.fields[8] = s;
+		var output = new webglExample_Transformation();
+		var sum = 0.;
+		sum += _this.fields[0] * mat.fields[0];
+		sum += _this.fields[4] * mat.fields[1];
+		sum += _this.fields[8] * mat.fields[2];
+		sum += _this.fields[12] * mat.fields[3];
+		output.fields[0] = sum;
+		var sum = 0.;
+		sum += _this.fields[0] * mat.fields[4];
+		sum += _this.fields[4] * mat.fields[5];
+		sum += _this.fields[8] * mat.fields[6];
+		sum += _this.fields[12] * mat.fields[7];
+		output.fields[4] = sum;
+		var sum = 0.;
+		sum += _this.fields[0] * mat.fields[8];
+		sum += _this.fields[4] * mat.fields[9];
+		sum += _this.fields[8] * mat.fields[10];
+		sum += _this.fields[12] * mat.fields[11];
+		output.fields[8] = sum;
+		var sum = 0.;
+		sum += _this.fields[0] * mat.fields[12];
+		sum += _this.fields[4] * mat.fields[13];
+		sum += _this.fields[8] * mat.fields[14];
+		sum += _this.fields[12] * mat.fields[15];
+		output.fields[12] = sum;
+		var sum = 0.;
+		sum += _this.fields[1] * mat.fields[0];
+		sum += _this.fields[5] * mat.fields[1];
+		sum += _this.fields[9] * mat.fields[2];
+		sum += _this.fields[13] * mat.fields[3];
+		output.fields[1] = sum;
+		var sum = 0.;
+		sum += _this.fields[1] * mat.fields[4];
+		sum += _this.fields[5] * mat.fields[5];
+		sum += _this.fields[9] * mat.fields[6];
+		sum += _this.fields[13] * mat.fields[7];
+		output.fields[5] = sum;
+		var sum = 0.;
+		sum += _this.fields[1] * mat.fields[8];
+		sum += _this.fields[5] * mat.fields[9];
+		sum += _this.fields[9] * mat.fields[10];
+		sum += _this.fields[13] * mat.fields[11];
+		output.fields[9] = sum;
+		var sum = 0.;
+		sum += _this.fields[1] * mat.fields[12];
+		sum += _this.fields[5] * mat.fields[13];
+		sum += _this.fields[9] * mat.fields[14];
+		sum += _this.fields[13] * mat.fields[15];
+		output.fields[13] = sum;
+		var sum = 0.;
+		sum += _this.fields[2] * mat.fields[0];
+		sum += _this.fields[6] * mat.fields[1];
+		sum += _this.fields[10] * mat.fields[2];
+		sum += _this.fields[14] * mat.fields[3];
+		output.fields[2] = sum;
+		var sum = 0.;
+		sum += _this.fields[2] * mat.fields[4];
+		sum += _this.fields[6] * mat.fields[5];
+		sum += _this.fields[10] * mat.fields[6];
+		sum += _this.fields[14] * mat.fields[7];
+		output.fields[6] = sum;
+		var sum = 0.;
+		sum += _this.fields[2] * mat.fields[8];
+		sum += _this.fields[6] * mat.fields[9];
+		sum += _this.fields[10] * mat.fields[10];
+		sum += _this.fields[14] * mat.fields[11];
+		output.fields[10] = sum;
+		var sum = 0.;
+		sum += _this.fields[2] * mat.fields[12];
+		sum += _this.fields[6] * mat.fields[13];
+		sum += _this.fields[10] * mat.fields[14];
+		sum += _this.fields[14] * mat.fields[15];
+		output.fields[14] = sum;
+		var sum = 0.;
+		sum += _this.fields[3] * mat.fields[0];
+		sum += _this.fields[7] * mat.fields[1];
+		sum += _this.fields[11] * mat.fields[2];
+		sum += _this.fields[15] * mat.fields[3];
+		output.fields[3] = sum;
+		var sum = 0.;
+		sum += _this.fields[3] * mat.fields[4];
+		sum += _this.fields[7] * mat.fields[5];
+		sum += _this.fields[11] * mat.fields[6];
+		sum += _this.fields[15] * mat.fields[7];
+		output.fields[7] = sum;
+		var sum = 0.;
+		sum += _this.fields[3] * mat.fields[8];
+		sum += _this.fields[7] * mat.fields[9];
+		sum += _this.fields[11] * mat.fields[10];
+		sum += _this.fields[15] * mat.fields[11];
+		output.fields[11] = sum;
+		var sum = 0.;
+		sum += _this.fields[3] * mat.fields[12];
+		sum += _this.fields[7] * mat.fields[13];
+		sum += _this.fields[11] * mat.fields[14];
+		sum += _this.fields[15] * mat.fields[15];
+		output.fields[15] = sum;
+		this.camera.position = output;
+	}
+	,onceTraceAll: function() {
+		if(this.count == 50) {
+			console.log("src/webglExample/WebGLExample.hx:88:",this.camera);
+			console.log("src/webglExample/WebGLExample.hx:89:",this.light);
+			console.log("src/webglExample/WebGLExample.hx:90:",this.objects);
+		}
+		this.count++;
+	}
 };
 function webglExample_WebGLExample_main() {
 	new webglExample_WebGLExample();
@@ -2156,10 +2338,13 @@ function webglExample_geometry_GeometryParser_objParser(src) {
 		var line = lines[i];
 		if(webglExample_geometry_GeometryParser_position.match(line)) {
 			positions.push(new webglExample_geometry_Vector3(parseFloat(webglExample_geometry_GeometryParser_position.matched(1)),parseFloat(webglExample_geometry_GeometryParser_position.matched(2)),parseFloat(webglExample_geometry_GeometryParser_position.matched(3))));
+			console.log("src/webglExample/geometry/GeometryParser.hx:30:",positions);
 		} else if(webglExample_geometry_GeometryParser_normal.match(line)) {
 			normals.push(new webglExample_geometry_Vector3(parseFloat(webglExample_geometry_GeometryParser_normal.matched(1)),parseFloat(webglExample_geometry_GeometryParser_normal.matched(2)),parseFloat(webglExample_geometry_GeometryParser_normal.matched(3))));
+			console.log("src/webglExample/geometry/GeometryParser.hx:37:",normals);
 		} else if(webglExample_geometry_GeometryParser_uv.match(line)) {
 			uvs.push(new webglExample_geometry_Vector2(parseFloat(webglExample_geometry_GeometryParser_uv.matched(1)),parseFloat(webglExample_geometry_GeometryParser_uv.matched(2))));
+			console.log("src/webglExample/geometry/GeometryParser.hx:43:",uvs);
 		} else if(webglExample_geometry_GeometryParser_face.match(line)) {
 			var vertices = [];
 			var i1 = 1;
@@ -2167,6 +2352,7 @@ function webglExample_geometry_GeometryParser_objParser(src) {
 				var p0 = Std.parseInt(webglExample_geometry_GeometryParser_face.matched(i1));
 				var p1 = Std.parseInt(webglExample_geometry_GeometryParser_face.matched(i1 + 1));
 				var p2 = Std.parseInt(webglExample_geometry_GeometryParser_face.matched(i1 + 2));
+				console.log("src/webglExample/geometry/GeometryParser.hx:53:",p0 + "," + p1 + "," + p2);
 				var position = positions[p0 - 1];
 				var uv = uvs[p1 - 1];
 				var normal = normals[p2 - 1];
@@ -2185,7 +2371,7 @@ function webglExample_geometry_GeometryParser_loadOBJ(url) {
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function() {
 				if(xhr.readyState == 4) {
-					console.log("src/webglExample/geometry/GeometryParser.hx:69:","geometryparser working");
+					console.log("src/webglExample/geometry/GeometryParser.hx:73:","geometryparser working");
 					resolve(webglExample_geometry_GeometryParser_objParser(xhr.responseText));
 				}
 			};

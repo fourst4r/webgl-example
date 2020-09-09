@@ -23,14 +23,12 @@ class Mesh{
         this.position    = new Transformation();
         this.gl = gl;
     }
-
     public inline
     function destroy() {
         positions.destroy();
         normals.destroy();
         uvs.destroy();
     }
-
     public inline 
     function draw( shaderProgram ){
         positions.bindToAttribute( shaderProgram.position );
@@ -46,7 +44,8 @@ class Mesh{
         var geometry = loadOBJ( modelUrl );
         var texture = Texture.load( gl, textureUrl );
         return Promise.all( [ geometry, texture ] ).then( function ( params ) {
-            return new Mesh( gl, params[0], params[1] );
+            trace('mesh promise all ' + params );
+            return new Mesh( gl, params[ 0 ], params[ 1 ] );
         });
     }
 }
