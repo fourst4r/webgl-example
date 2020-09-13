@@ -35,7 +35,6 @@ camera.setOrthographic(16, 10, 10)
 var light = new Light()
 
 loop()
-
 function loop () {
   renderer.render(camera, light, objects)
   camera.position = camera.position.rotateY(Math.PI / 120)

@@ -32,7 +32,8 @@ class WebGLExample {
     }
     public inline
     function loadMesh(){
-        Mesh.load( gl, '/assets/sphere.obj', '/assets/diffuse.png' ).then( function ( mesh) {
+        Mesh.load( gl, '/assets/sphere.obj', '/assets/diffuse.png' )
+            .then( function ( mesh ) {
                 objects.push( mesh );
                 trace('mesh set');
         });

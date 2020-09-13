@@ -14,14 +14,17 @@ Geometry.parseOBJ = function (src) {
   var uvs = []
   var normals = []
   var faces = []
+  var count = 0;
   lines.forEach(function (line) {
     // Match each line of the file against various RegEx-es
     var result
     if ((result = POSITION.exec(line)) != null) {
       // Add new vertex position
+      
       positions.push(new Vector3(parseFloat(result[1]), parseFloat(result[2]), parseFloat(result[3])))
     } else if ((result = NORMAL.exec(line)) != null) {
       // Add new vertex normal
+      
       normals.push(new Vector3(parseFloat(result[1]), parseFloat(result[2]), parseFloat(result[3])))
     } else if ((result = UV.exec(line)) != null) {
       // Add new texture mapping point
@@ -32,6 +35,7 @@ Geometry.parseOBJ = function (src) {
       // Create three vertices from the passed one-indexed indices
       for (var i = 1; i < 10; i += 3) {
         var part = result.slice(i, i + 3)
+        console.log( ( count++ ) + ' , ' + part[0] + ', ' + part[1] + ', ' + part[2] );
         var position = positions[parseInt(part[0]) - 1]
         var uv = uvs[parseInt(part[1]) - 1]
         var normal = normals[parseInt(part[2]) - 1]

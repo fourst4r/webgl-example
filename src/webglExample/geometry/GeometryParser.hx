@@ -18,6 +18,7 @@ function objParser( src: String ) {
     var uvs       = [];
     var normals   = [];
     var faces     = [];
+    var count = 0;
     for( i in 0...lines.length ) {
         var line = lines[ i ];
         // Match each line of the file against various RegEx-es
@@ -27,20 +28,17 @@ function objParser( src: String ) {
                                        , Std.parseFloat( position.matched(3) )
                                        )
                            );
-                           trace(positions);
         } else if ( normal.match( line ) ){
             normals.push( new Vector3( Std.parseFloat( normal.matched(1) )
                                        , Std.parseFloat( normal.matched(2) )
                                        , Std.parseFloat( normal.matched(3) )
                                       )
                         );
-                        trace(normals);
         } else if ( uv.match( line ) ){
             uvs.push( new Vector2( Std.parseFloat( uv.matched(1) )
                                  , Std.parseFloat( uv.matched(2) )
                                  )
                     );
-                    trace(uvs);
         } else if ( face.match( line ) ){
             // Add new face
             var vertices = [];
@@ -50,7 +48,7 @@ function objParser( src: String ) {
                 var p0 = Std.parseInt( face.matched( i ) );
                 var p1 = Std.parseInt( face.matched( i+1 ) );
                 var p2 = Std.parseInt( face.matched( i+2 ) );
-                trace( p0 +','+p1+','+p2);
+                trace( (count++) + ',' + p0 +','+p1+','+p2);
                 var position = positions[ p0 - 1 ];
                 var uv       = uvs[ p1 - 1 ];
                 var normal   = normals[ p2 - 1 ];
@@ -58,6 +56,7 @@ function objParser( src: String ) {
                 i+= 3;
             }
             faces.push( new Face( vertices ) );
+            
         }
    }
    return new Geometry( faces );
@@ -65,17 +64,15 @@ function objParser( src: String ) {
 
 // TODO: unsure on promise to Haxify!!
 function loadOBJ( url: String ) {
-    return new Promise(function(fulfill, reject) {
-        return new Promise(function (resolve, reject2 ) {
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function(){
-                if ( xhr.readyState == XMLHttpRequest.DONE ){
-                    trace('geometryparser working');
-                    resolve( objParser( xhr.responseText ) );
-                }
-            };
-            xhr.open( 'GET', url, true );
-            xhr.send( null );
-        });
+    return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+            if ( xhr.readyState == XMLHttpRequest.DONE ){
+                trace('geometryparser working');
+                resolve( objParser( xhr.responseText ) );
+            }
+        };
+        xhr.open( 'GET', url, true );
+        xhr.send( null );
     });
 }

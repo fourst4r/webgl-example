@@ -850,6 +850,7 @@ webglExample_ShaderProgram.load = function(gl,vertUrl,fragUrl) {
 		xhr.open("GET",url1,true);
 		xhr.send(null);
 	})]).then(function(files) {
+		console.log("src/webglExample/ShaderProgram.hx:64:"," promise.all shaderProgram ");
 		return new webglExample_ShaderProgram(gl,files[0],files[1]);
 	});
 };
@@ -1701,6 +1702,7 @@ var webglExample_WebGLExample = function() {
 		xhr.open("GET",url1,true);
 		xhr.send(null);
 	})]).then(function(files) {
+		console.log("src/webglExample/ShaderProgram.hx:64:"," promise.all shaderProgram ");
 		return new webglExample_ShaderProgram(gl1,files[0],files[1]);
 	}).then(function(shader) {
 		var _this = _gthis1.renderer;
@@ -1754,6 +1756,7 @@ webglExample_WebGLExample.prototype = {
 			xhr.open("GET",url1,true);
 			xhr.send(null);
 		})]).then(function(files) {
+			console.log("src/webglExample/ShaderProgram.hx:64:"," promise.all shaderProgram ");
 			return new webglExample_ShaderProgram(gl,files[0],files[1]);
 		}).then(function(shader) {
 			var _this = _gthis.renderer;
@@ -2331,6 +2334,7 @@ function webglExample_geometry_GeometryParser_objParser(src) {
 	var uvs = [];
 	var normals = [];
 	var faces = [];
+	var count = 0;
 	var _g = 0;
 	var _g1 = lines.length;
 	while(_g < _g1) {
@@ -2338,13 +2342,10 @@ function webglExample_geometry_GeometryParser_objParser(src) {
 		var line = lines[i];
 		if(webglExample_geometry_GeometryParser_position.match(line)) {
 			positions.push(new webglExample_geometry_Vector3(parseFloat(webglExample_geometry_GeometryParser_position.matched(1)),parseFloat(webglExample_geometry_GeometryParser_position.matched(2)),parseFloat(webglExample_geometry_GeometryParser_position.matched(3))));
-			console.log("src/webglExample/geometry/GeometryParser.hx:30:",positions);
 		} else if(webglExample_geometry_GeometryParser_normal.match(line)) {
 			normals.push(new webglExample_geometry_Vector3(parseFloat(webglExample_geometry_GeometryParser_normal.matched(1)),parseFloat(webglExample_geometry_GeometryParser_normal.matched(2)),parseFloat(webglExample_geometry_GeometryParser_normal.matched(3))));
-			console.log("src/webglExample/geometry/GeometryParser.hx:37:",normals);
 		} else if(webglExample_geometry_GeometryParser_uv.match(line)) {
 			uvs.push(new webglExample_geometry_Vector2(parseFloat(webglExample_geometry_GeometryParser_uv.matched(1)),parseFloat(webglExample_geometry_GeometryParser_uv.matched(2))));
-			console.log("src/webglExample/geometry/GeometryParser.hx:43:",uvs);
 		} else if(webglExample_geometry_GeometryParser_face.match(line)) {
 			var vertices = [];
 			var i1 = 1;
@@ -2352,7 +2353,7 @@ function webglExample_geometry_GeometryParser_objParser(src) {
 				var p0 = Std.parseInt(webglExample_geometry_GeometryParser_face.matched(i1));
 				var p1 = Std.parseInt(webglExample_geometry_GeometryParser_face.matched(i1 + 1));
 				var p2 = Std.parseInt(webglExample_geometry_GeometryParser_face.matched(i1 + 2));
-				console.log("src/webglExample/geometry/GeometryParser.hx:53:",p0 + "," + p1 + "," + p2);
+				console.log("src/webglExample/geometry/GeometryParser.hx:51:",count++ + "," + p0 + "," + p1 + "," + p2);
 				var position = positions[p0 - 1];
 				var uv = uvs[p1 - 1];
 				var normal = normals[p2 - 1];
@@ -2362,22 +2363,21 @@ function webglExample_geometry_GeometryParser_objParser(src) {
 			faces.push(new webglExample_geometry_Face(vertices));
 		}
 	}
+	console.log("src/webglExample/geometry/GeometryParser.hx:62:","faces " + Std.string(faces[0].vertices[0].position));
 	var this1 = new webglExample_geometry_Geometry_$(faces);
 	return this1;
 }
 function webglExample_geometry_GeometryParser_loadOBJ(url) {
-	return new Promise(function(fulfill,reject) {
-		return new Promise(function(resolve,reject2) {
-			var xhr = new XMLHttpRequest();
-			xhr.onreadystatechange = function() {
-				if(xhr.readyState == 4) {
-					console.log("src/webglExample/geometry/GeometryParser.hx:73:","geometryparser working");
-					resolve(webglExample_geometry_GeometryParser_objParser(xhr.responseText));
-				}
-			};
-			xhr.open("GET",url,true);
-			xhr.send(null);
-		});
+	return new Promise(function(resolve,reject) {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if(xhr.readyState == 4) {
+				console.log("src/webglExample/geometry/GeometryParser.hx:73:","geometryparser working");
+				resolve(webglExample_geometry_GeometryParser_objParser(xhr.responseText));
+			}
+		};
+		xhr.open("GET",url,true);
+		xhr.send(null);
 	});
 }
 var webglExample_geometry_Vector2 = function(x,y) {
