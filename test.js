@@ -575,21 +575,9 @@ webglExample_Mesh.prototype = {
 		_this.gl.deleteBuffer(_this.data);
 	}
 	,draw: function(shaderProgram) {
-		var _this = this.positions;
-		var attribute = shaderProgram.position;
-		_this.gl.bindBuffer(34962,_this.data);
-		_this.gl.enableVertexAttribArray(attribute);
-		_this.gl.vertexAttribPointer(attribute,_this.size,5126,false,0,0);
-		var _this = this.normals;
-		var attribute = shaderProgram.normal;
-		_this.gl.bindBuffer(34962,_this.data);
-		_this.gl.enableVertexAttribArray(attribute);
-		_this.gl.vertexAttribPointer(attribute,_this.size,5126,false,0,0);
-		var _this = this.uvs;
-		var attribute = shaderProgram.uv;
-		_this.gl.bindBuffer(34962,_this.data);
-		_this.gl.enableVertexAttribArray(attribute);
-		_this.gl.vertexAttribPointer(attribute,_this.size,5126,false,0,0);
+		this.positions.bindToAttribute(shaderProgram.position);
+		this.normals.bindToAttribute(shaderProgram.normal);
+		this.uvs.bindToAttribute(shaderProgram.uv);
 		var this1 = new Float32Array(this.position.fields);
 		this.gl.uniformMatrix4fv(shaderProgram.model,false,this1);
 		var _this = this.texture;
@@ -765,30 +753,18 @@ webglExample_Renderer.prototype = {
 			var i = _g++;
 			mesh = objects[i];
 			var shaderProgram = this.shaderProgram;
-			var _this = mesh.positions;
-			var attribute = shaderProgram.position;
-			_this.gl.bindBuffer(34962,_this.data);
-			_this.gl.enableVertexAttribArray(attribute);
-			_this.gl.vertexAttribPointer(attribute,_this.size,5126,false,0,0);
-			var _this1 = mesh.normals;
-			var attribute1 = shaderProgram.normal;
-			_this1.gl.bindBuffer(34962,_this1.data);
-			_this1.gl.enableVertexAttribArray(attribute1);
-			_this1.gl.vertexAttribPointer(attribute1,_this1.size,5126,false,0,0);
-			var _this2 = mesh.uvs;
-			var attribute2 = shaderProgram.uv;
-			_this2.gl.bindBuffer(34962,_this2.data);
-			_this2.gl.enableVertexAttribArray(attribute2);
-			_this2.gl.vertexAttribPointer(attribute2,_this2.size,5126,false,0,0);
+			mesh.positions.bindToAttribute(shaderProgram.position);
+			mesh.normals.bindToAttribute(shaderProgram.normal);
+			mesh.uvs.bindToAttribute(shaderProgram.uv);
 			var this1 = new Float32Array(mesh.position.fields);
 			mesh.gl.uniformMatrix4fv(shaderProgram.model,false,this1);
-			var _this3 = mesh.texture;
+			var _this = mesh.texture;
 			var uniform = shaderProgram.diffuse;
-			var texture = _this3.data;
+			var texture = _this.data;
 			var _2D = 3553;
-			_this3.gl.activeTexture(33984);
-			_this3.gl.bindTexture(_2D,texture);
-			_this3.gl.uniform1i(uniform,0);
+			_this.gl.activeTexture(33984);
+			_this.gl.bindTexture(_2D,texture);
+			_this.gl.uniform1i(uniform,0);
 			mesh.gl.drawArrays(4,0,mesh.vertexCount);
 		}
 	}
@@ -1628,14 +1604,14 @@ webglExample_Transformation.prototype = {
 		gl.uniformMatrix4fv(uniform,transpose,this1);
 	}
 };
-var webglExample_Vbo = function(gl,data,count) {
+var webglExample_Vbo = function(gl,data_,count) {
 	var bufferObject = gl.createBuffer();
+	this.data = bufferObject;
 	gl.bindBuffer(34962,bufferObject);
-	gl.bufferData(34962,new Float32Array(data),35044);
+	gl.bufferData(34962,new Float32Array(data_),35044);
 	this.gl = gl;
-	this.size = data.length / count | 0;
+	this.size = data_.length / count | 0;
 	this.count = count;
-	this.data = data;
 };
 webglExample_Vbo.__name__ = true;
 webglExample_Vbo.prototype = {
@@ -1677,7 +1653,7 @@ var webglExample_WebGLExample = function() {
 		return new webglExample_Mesh(gl,params[0],params[1]);
 	}).then(function(mesh) {
 		_gthis.objects.push(mesh);
-		console.log("src/webglExample/WebGLExample.hx:37:","mesh set");
+		console.log("src/webglExample/WebGLExample.hx:38:","mesh set");
 	});
 	var _gthis1 = this;
 	var gl1 = this.gl;
@@ -1708,7 +1684,7 @@ var webglExample_WebGLExample = function() {
 		var _this = _gthis1.renderer;
 		console.log("src/webglExample/Renderer.hx:24:","shader set");
 		_this.shaderProgram = shader;
-		console.log("src/webglExample/WebGLExample.hx:45:","shader setup");
+		console.log("src/webglExample/WebGLExample.hx:46:","shader setup");
 	});
 	var _this = this.camera;
 	_this.projection = new webglExample_Transformation();
@@ -1729,7 +1705,7 @@ webglExample_WebGLExample.prototype = {
 			return new webglExample_Mesh(gl,params[0],params[1]);
 		}).then(function(mesh) {
 			_gthis.objects.push(mesh);
-			console.log("src/webglExample/WebGLExample.hx:37:","mesh set");
+			console.log("src/webglExample/WebGLExample.hx:38:","mesh set");
 		});
 	}
 	,loadShader: function() {
@@ -1762,7 +1738,7 @@ webglExample_WebGLExample.prototype = {
 			var _this = _gthis.renderer;
 			console.log("src/webglExample/Renderer.hx:24:","shader set");
 			_this.shaderProgram = shader;
-			console.log("src/webglExample/WebGLExample.hx:45:","shader setup");
+			console.log("src/webglExample/WebGLExample.hx:46:","shader setup");
 		});
 	}
 	,orthogonalCameraSetup: function() {
@@ -1798,9 +1774,9 @@ webglExample_WebGLExample.prototype = {
 	}
 	,loop: function(v) {
 		if(this.count == 50) {
-			console.log("src/webglExample/WebGLExample.hx:88:",this.camera);
-			console.log("src/webglExample/WebGLExample.hx:89:",this.light);
-			console.log("src/webglExample/WebGLExample.hx:90:",this.objects);
+			console.log("src/webglExample/WebGLExample.hx:89:",this.camera);
+			console.log("src/webglExample/WebGLExample.hx:90:",this.light);
+			console.log("src/webglExample/WebGLExample.hx:91:",this.objects);
 		}
 		this.count++;
 		var _this = this.renderer;
@@ -1950,30 +1926,18 @@ webglExample_WebGLExample.prototype = {
 				var i = _g++;
 				mesh = objects[i];
 				var shaderProgram = _this.shaderProgram;
-				var _this1 = mesh.positions;
-				var attribute = shaderProgram.position;
-				_this1.gl.bindBuffer(34962,_this1.data);
-				_this1.gl.enableVertexAttribArray(attribute);
-				_this1.gl.vertexAttribPointer(attribute,_this1.size,5126,false,0,0);
-				var _this2 = mesh.normals;
-				var attribute1 = shaderProgram.normal;
-				_this2.gl.bindBuffer(34962,_this2.data);
-				_this2.gl.enableVertexAttribArray(attribute1);
-				_this2.gl.vertexAttribPointer(attribute1,_this2.size,5126,false,0,0);
-				var _this3 = mesh.uvs;
-				var attribute2 = shaderProgram.uv;
-				_this3.gl.bindBuffer(34962,_this3.data);
-				_this3.gl.enableVertexAttribArray(attribute2);
-				_this3.gl.vertexAttribPointer(attribute2,_this3.size,5126,false,0,0);
+				mesh.positions.bindToAttribute(shaderProgram.position);
+				mesh.normals.bindToAttribute(shaderProgram.normal);
+				mesh.uvs.bindToAttribute(shaderProgram.uv);
 				var this1 = new Float32Array(mesh.position.fields);
 				mesh.gl.uniformMatrix4fv(shaderProgram.model,false,this1);
-				var _this4 = mesh.texture;
+				var _this1 = mesh.texture;
 				var uniform = shaderProgram.diffuse;
-				var texture = _this4.data;
+				var texture = _this1.data;
 				var _2D = 3553;
-				_this4.gl.activeTexture(33984);
-				_this4.gl.bindTexture(_2D,texture);
-				_this4.gl.uniform1i(uniform,0);
+				_this1.gl.activeTexture(33984);
+				_this1.gl.bindTexture(_2D,texture);
+				_this1.gl.uniform1i(uniform,0);
 				mesh.gl.drawArrays(4,0,mesh.vertexCount);
 			}
 		}
@@ -2203,9 +2167,9 @@ webglExample_WebGLExample.prototype = {
 	}
 	,onceTraceAll: function() {
 		if(this.count == 50) {
-			console.log("src/webglExample/WebGLExample.hx:88:",this.camera);
-			console.log("src/webglExample/WebGLExample.hx:89:",this.light);
-			console.log("src/webglExample/WebGLExample.hx:90:",this.objects);
+			console.log("src/webglExample/WebGLExample.hx:89:",this.camera);
+			console.log("src/webglExample/WebGLExample.hx:90:",this.light);
+			console.log("src/webglExample/WebGLExample.hx:91:",this.objects);
 		}
 		this.count++;
 	}
@@ -2363,7 +2327,6 @@ function webglExample_geometry_GeometryParser_objParser(src) {
 			faces.push(new webglExample_geometry_Face(vertices));
 		}
 	}
-	console.log("src/webglExample/geometry/GeometryParser.hx:62:","faces " + Std.string(faces[0].vertices[0].position));
 	var this1 = new webglExample_geometry_Geometry_$(faces);
 	return this1;
 }
@@ -2372,7 +2335,7 @@ function webglExample_geometry_GeometryParser_loadOBJ(url) {
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
 			if(xhr.readyState == 4) {
-				console.log("src/webglExample/geometry/GeometryParser.hx:73:","geometryparser working");
+				console.log("src/webglExample/geometry/GeometryParser.hx:71:","geometryparser working");
 				resolve(webglExample_geometry_GeometryParser_objParser(xhr.responseText));
 			}
 		};
