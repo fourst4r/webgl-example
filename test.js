@@ -1646,8 +1646,8 @@ var webglExample_WebGLExample = function() {
 	this.gl = this.renderer.gl;
 	var _gthis = this;
 	var gl = this.gl;
-	var geometry = webglExample_geometry_GeometryParser_loadOBJ("/assets/sphere.obj");
-	var texture = webglExample_Texture.load(gl,"/assets/diffuse.png");
+	var geometry = webglExample_geometry_GeometryParser_loadOBJ("./assets/sphere.obj");
+	var texture = webglExample_Texture.load(gl,"./assets/diffuse.png");
 	Promise.all([geometry,texture]).then(function(params) {
 		console.log("src/webglExample/Mesh.hx:47:","mesh promise all " + Std.string(params));
 		return new webglExample_Mesh(gl,params[0],params[1]);
@@ -1657,8 +1657,8 @@ var webglExample_WebGLExample = function() {
 	});
 	var _gthis1 = this;
 	var gl1 = this.gl;
-	var url = "/shaders/basic.vert";
-	var url1 = "/shaders/basic.frag";
+	var url = "./shaders/basic.vert";
+	var url1 = "./shaders/basic.frag";
 	Promise.all([new Promise(function(resolve,reject) {
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
@@ -1698,8 +1698,8 @@ webglExample_WebGLExample.prototype = {
 	loadMesh: function() {
 		var _gthis = this;
 		var gl = this.gl;
-		var geometry = webglExample_geometry_GeometryParser_loadOBJ("/assets/sphere.obj");
-		var texture = webglExample_Texture.load(gl,"/assets/diffuse.png");
+		var geometry = webglExample_geometry_GeometryParser_loadOBJ("./assets/sphere.obj");
+		var texture = webglExample_Texture.load(gl,"./assets/diffuse.png");
 		Promise.all([geometry,texture]).then(function(params) {
 			console.log("src/webglExample/Mesh.hx:47:","mesh promise all " + Std.string(params));
 			return new webglExample_Mesh(gl,params[0],params[1]);
@@ -1711,8 +1711,8 @@ webglExample_WebGLExample.prototype = {
 	,loadShader: function() {
 		var _gthis = this;
 		var gl = this.gl;
-		var url = "/shaders/basic.vert";
-		var url1 = "/shaders/basic.frag";
+		var url = "./shaders/basic.vert";
+		var url1 = "./shaders/basic.frag";
 		Promise.all([new Promise(function(resolve,reject) {
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function() {
