@@ -32,6 +32,8 @@ class WebGLExample {
     }
     public inline
     function loadMesh(){
+        // note paths setup for github!!
+        // remove 'https://nanjizal.github.io/webgl-example' from path!!
         Mesh.load( gl, 'https://nanjizal.github.io/webgl-example/assets/sphere.obj', 'https://nanjizal.github.io/webgl-example/assets/diffuse.png' )
             .then( function ( mesh ) {
                 objects.push( mesh );
@@ -40,6 +42,8 @@ class WebGLExample {
     }
     public inline
     function loadShader(){
+        // note paths setup for github!!
+        // remove 'https://nanjizal.github.io/webgl-example' from path!!
         ShaderProgram.load( gl, 'https://nanjizal.github.io/webgl-example/shaders/basic.vert', 'https://nanjizal.github.io/webgl-example/shaders/basic.frag' )
              .then( function ( shader ) {
                renderer.setShader(shader);

@@ -1653,7 +1653,7 @@ var webglExample_WebGLExample = function() {
 		return new webglExample_Mesh(gl,params[0],params[1]);
 	}).then(function(mesh) {
 		_gthis.objects.push(mesh);
-		console.log("src/webglExample/WebGLExample.hx:38:","mesh set");
+		console.log("src/webglExample/WebGLExample.hx:40:","mesh set");
 	});
 	var _gthis1 = this;
 	var gl1 = this.gl;
@@ -1684,7 +1684,7 @@ var webglExample_WebGLExample = function() {
 		var _this = _gthis1.renderer;
 		console.log("src/webglExample/Renderer.hx:24:","shader set");
 		_this.shaderProgram = shader;
-		console.log("src/webglExample/WebGLExample.hx:46:","shader setup");
+		console.log("src/webglExample/WebGLExample.hx:50:","shader setup");
 	});
 	var _this = this.camera;
 	_this.projection = new webglExample_Transformation();
@@ -1705,7 +1705,7 @@ webglExample_WebGLExample.prototype = {
 			return new webglExample_Mesh(gl,params[0],params[1]);
 		}).then(function(mesh) {
 			_gthis.objects.push(mesh);
-			console.log("src/webglExample/WebGLExample.hx:38:","mesh set");
+			console.log("src/webglExample/WebGLExample.hx:40:","mesh set");
 		});
 	}
 	,loadShader: function() {
@@ -1738,7 +1738,7 @@ webglExample_WebGLExample.prototype = {
 			var _this = _gthis.renderer;
 			console.log("src/webglExample/Renderer.hx:24:","shader set");
 			_this.shaderProgram = shader;
-			console.log("src/webglExample/WebGLExample.hx:46:","shader setup");
+			console.log("src/webglExample/WebGLExample.hx:50:","shader setup");
 		});
 	}
 	,orthogonalCameraSetup: function() {
@@ -1774,9 +1774,9 @@ webglExample_WebGLExample.prototype = {
 	}
 	,loop: function(v) {
 		if(this.count == 50) {
-			console.log("src/webglExample/WebGLExample.hx:89:",this.camera);
-			console.log("src/webglExample/WebGLExample.hx:90:",this.light);
-			console.log("src/webglExample/WebGLExample.hx:91:",this.objects);
+			console.log("src/webglExample/WebGLExample.hx:93:",this.camera);
+			console.log("src/webglExample/WebGLExample.hx:94:",this.light);
+			console.log("src/webglExample/WebGLExample.hx:95:",this.objects);
 		}
 		this.count++;
 		var _this = this.renderer;
@@ -2167,9 +2167,9 @@ webglExample_WebGLExample.prototype = {
 	}
 	,onceTraceAll: function() {
 		if(this.count == 50) {
-			console.log("src/webglExample/WebGLExample.hx:89:",this.camera);
-			console.log("src/webglExample/WebGLExample.hx:90:",this.light);
-			console.log("src/webglExample/WebGLExample.hx:91:",this.objects);
+			console.log("src/webglExample/WebGLExample.hx:93:",this.camera);
+			console.log("src/webglExample/WebGLExample.hx:94:",this.light);
+			console.log("src/webglExample/WebGLExample.hx:95:",this.objects);
 		}
 		this.count++;
 	}
