@@ -32,7 +32,7 @@ class WebGLExample {
     }
     public inline
     function loadMesh(){
-        Mesh.load( gl, '/assets/sphere.obj', '/assets/diffuse.png' )
+        Mesh.load( gl, './assets/sphere.obj', './assets/diffuse.png' )
             .then( function ( mesh ) {
                 objects.push( mesh );
                 trace('mesh set');
@@ -40,7 +40,7 @@ class WebGLExample {
     }
     public inline
     function loadShader(){
-        ShaderProgram.load( gl, '/shaders/basic.vert', '/shaders/basic.frag' )
+        ShaderProgram.load( gl, './shaders/basic.vert', './shaders/basic.frag' )
              .then( function ( shader ) {
                renderer.setShader(shader);
                trace('shader setup');
