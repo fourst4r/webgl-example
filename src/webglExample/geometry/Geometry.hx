@@ -72,7 +72,7 @@ abstract Geometry( Geometry_ ) from Geometry_ to Geometry_ {
                 vertex = face.vertices[ j ];
                 v = vertex.uv;
                 answer.push( v.x );
-                answer.push( v.y );
+                answer.push( 1 - v.y );
             }
         }
         return answer;

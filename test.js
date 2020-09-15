@@ -547,7 +547,7 @@ var webglExample_Mesh = function(gl,geometry,texture) {
 			vertex = face.vertices[j];
 			v = vertex.uv;
 			answer.push(v.x);
-			answer.push(v.y);
+			answer.push(1 - v.y);
 		}
 	}
 	this.uvs = new webglExample_Vbo(gl,answer,vertexCount);
@@ -2265,7 +2265,7 @@ webglExample_geometry_Geometry.uvs = function(this1) {
 			vertex = face.vertices[j];
 			v = vertex.uv;
 			answer.push(v.x);
-			answer.push(v.y);
+			answer.push(1 - v.y);
 		}
 	}
 	return answer;
