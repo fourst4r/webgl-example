@@ -568,11 +568,11 @@ webglExample_Mesh.load = function(gl,modelUrl,textureUrl) {
 webglExample_Mesh.prototype = {
 	destroy: function() {
 		var _this = this.positions;
-		_this.gl.deleteBuffer(_this.data);
+		_this.gl.deleteBuffer(_this.buffer);
 		var _this = this.normals;
-		_this.gl.deleteBuffer(_this.data);
+		_this.gl.deleteBuffer(_this.buffer);
 		var _this = this.uvs;
-		_this.gl.deleteBuffer(_this.data);
+		_this.gl.deleteBuffer(_this.buffer);
 	}
 	,draw: function(shaderProgram) {
 		this.positions.bindToAttribute(shaderProgram.position);
@@ -1604,22 +1604,22 @@ webglExample_Transformation.prototype = {
 		gl.uniformMatrix4fv(uniform,transpose,this1);
 	}
 };
-var webglExample_Vbo = function(gl,data_,count) {
+var webglExample_Vbo = function(gl,data,count) {
 	var bufferObject = gl.createBuffer();
-	this.data = bufferObject;
+	this.buffer = bufferObject;
 	gl.bindBuffer(34962,bufferObject);
-	gl.bufferData(34962,new Float32Array(data_),35044);
+	gl.bufferData(34962,new Float32Array(data),35044);
 	this.gl = gl;
-	this.size = data_.length / count | 0;
+	this.size = data.length / count | 0;
 	this.count = count;
 };
 webglExample_Vbo.__name__ = true;
 webglExample_Vbo.prototype = {
 	destroy: function() {
-		this.gl.deleteBuffer(this.data);
+		this.gl.deleteBuffer(this.buffer);
 	}
 	,bindToAttribute: function(attribute) {
-		this.gl.bindBuffer(34962,this.data);
+		this.gl.bindBuffer(34962,this.buffer);
 		this.gl.enableVertexAttribArray(attribute);
 		this.gl.vertexAttribPointer(attribute,this.size,5126,false,0,0);
 	}
