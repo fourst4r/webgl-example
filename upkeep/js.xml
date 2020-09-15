@@ -37273,14 +37273,14 @@
 			<meta><m n=":value"><e>[]</e></m></meta>
 		</objects>
 		<loadMesh public="1" get="inline" set="null" line="33"><f a=""><x path="Void"/></f></loadMesh>
-		<loadShader public="1" get="inline" set="null" line="41"><f a=""><x path="Void"/></f></loadShader>
-		<orthogonalCameraSetup public="1" get="inline" set="null" line="49"><f a=""><x path="Void"/></f></orthogonalCameraSetup>
-		<createCanvas public="1" get="inline" set="null" line="53"><f a=""><x path="Void"/></f></createCanvas>
-		<styleZero public="1" get="inline" set="null" line="62"><f a="domGL">
+		<loadShader public="1" get="inline" set="null" line="43"><f a=""><x path="Void"/></f></loadShader>
+		<orthogonalCameraSetup public="1" get="inline" set="null" line="53"><f a=""><x path="Void"/></f></orthogonalCameraSetup>
+		<createCanvas public="1" get="inline" set="null" line="57"><f a=""><x path="Void"/></f></createCanvas>
+		<styleZero public="1" get="inline" set="null" line="66"><f a="domGL">
 	<c path="js.html.Element"/>
 	<x path="Void"/>
 </f></styleZero>
-		<px get="inline" set="null" line="71"><f a="v">
+		<px get="inline" set="null" line="75"><f a="v">
 	<x path="Int"/>
 	<c path="String"/>
 </f></px>
@@ -37288,12 +37288,12 @@
 			<x path="Int"/>
 			<meta><m n=":value"><e>0</e></m></meta>
 		</count>
-		<loop set="method" line="76"><f a="v">
+		<loop set="method" line="80"><f a="v">
 	<x path="Float"/>
 	<x path="Void"/>
 </f></loop>
-		<rotateHorizontally public="1" get="inline" set="null" line="82"><f a=""><x path="Void"/></f></rotateHorizontally>
-		<onceTraceAll public="1" get="inline" set="null" line="86"><f a=""><x path="Void"/></f></onceTraceAll>
+		<rotateHorizontally public="1" get="inline" set="null" line="86"><f a=""><x path="Void"/></f></rotateHorizontally>
+		<onceTraceAll public="1" get="inline" set="null" line="90"><f a=""><x path="Void"/></f></onceTraceAll>
 		<new public="1" set="method" line="22"><f a=""><x path="Void"/></f></new>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
