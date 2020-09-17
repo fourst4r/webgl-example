@@ -116,15 +116,6 @@
 
 		`this.length` increases by 1.</haxe_doc>
 		</push>
-		<toString public="1" set="method">
-			<f a=""><c path="String"/></f>
-			<haxe_doc>Returns a string representation of `this` Array.
-
-		The result will include the individual elements' String representations
-		separated by comma. The enclosing [ ] may be missing on some platforms,
-		use `Std.string()` to get a String representation that is consistent
-		across platforms.</haxe_doc>
-		</toString>
 		<iterator public="1" get="inline" set="null" line="88">
 			<f a=""><c path="haxe.iterators.ArrayIterator"><c path="Array.T"/></c></f>
 			<meta><m n=":runtime"/></meta>
@@ -37065,7 +37056,7 @@
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="webglExample.Mesh" params="" file="src/webglExample/Mesh.hx">
-		<load public="1" get="inline" set="null" line="42" static="1"><f a="gl:modelUrl:textureUrl">
+		<load public="1" get="inline" set="null" line="40" static="1"><f a="gl:modelUrl:textureUrl">
 	<c path="js.html.webgl.RenderingContext"/>
 	<c path="String"/>
 	<c path="String"/>
@@ -37078,8 +37069,8 @@
 		<position public="1"><c path="webglExample.Transformation"/></position>
 		<gl public="1"><c path="js.html.webgl.RenderingContext"/></gl>
 		<texture public="1"><c path="webglExample.Texture"/></texture>
-		<destroy public="1" get="inline" set="null" line="26"><f a=""><x path="Void"/></f></destroy>
-		<draw public="1" get="inline" set="null" line="32"><f a="shaderProgram">
+		<destroy public="1" get="inline" set="null" line="24"><f a=""><x path="Void"/></f></destroy>
+		<draw public="1" get="inline" set="null" line="30"><f a="shaderProgram">
 	<a>
 		<uv set="null"><x path="Int"/></uv>
 		<position set="null"><x path="Int"/></position>
@@ -37089,7 +37080,7 @@
 	</a>
 	<x path="Void"/>
 </f></draw>
-		<new public="1" set="method" line="16"><f a="gl:geometry:texture">
+		<new public="1" set="method" line="14"><f a="gl:geometry:texture">
 	<c path="js.html.webgl.RenderingContext"/>
 	<x path="webglExample.geometry.Geometry"/>
 	<c path="webglExample.Texture"/>
@@ -37130,7 +37121,7 @@
 	<c path="String"/>
 	<c path="js.lib.Promise"><c path="webglExample.ShaderProgram"/></c>
 </f></load>
-		<loadFile public="1" get="inline" set="null" line="68" static="1"><f a="url">
+		<loadFile public="1" get="inline" set="null" line="67" static="1"><f a="url">
 	<c path="String"/>
 	<c path="js.lib.Promise"><c path="String"/></c>
 </f></loadFile>
@@ -37147,7 +37138,7 @@
 		<vert public="1"><c path="js.html.webgl.Shader"/></vert>
 		<frag public="1"><c path="js.html.webgl.Shader"/></frag>
 		<program public="1"><c path="js.html.webgl.Program"/></program>
-		<useShader public="1" set="method" line="83"><f a=""><x path="Void"/></f></useShader>
+		<useShader public="1" set="method" line="82"><f a=""><x path="Void"/></f></useShader>
 		<new public="1" set="method" line="23"><f a="gl:vertSrc:fragSrc">
 	<c path="js.html.webgl.RenderingContext"/>
 	<c path="String"/>
@@ -37272,29 +37263,28 @@
 			<c path="Array"><c path="webglExample.Mesh"/></c>
 			<meta><m n=":value"><e>[]</e></m></meta>
 		</objects>
-		<loadMesh public="1" get="inline" set="null" line="33"><f a=""><x path="Void"/></f></loadMesh>
-		<loadShader public="1" get="inline" set="null" line="43"><f a=""><x path="Void"/></f></loadShader>
-		<orthogonalCameraSetup public="1" get="inline" set="null" line="53"><f a=""><x path="Void"/></f></orthogonalCameraSetup>
-		<createCanvas public="1" get="inline" set="null" line="57"><f a=""><x path="Void"/></f></createCanvas>
-		<styleZero public="1" get="inline" set="null" line="66"><f a="domGL">
+		<hRef public="1" expr="&quot;/&quot;">
+			<c path="String"/>
+			<meta><m n=":value"><e>"/"</e></m></meta>
+		</hRef>
+		<loadMesh public="1" get="inline" set="null" line="38"><f a=""><x path="Void"/></f></loadMesh>
+		<loadShader public="1" get="inline" set="null" line="50"><f a=""><x path="Void"/></f></loadShader>
+		<orthogonalCameraSetup public="1" get="inline" set="null" line="60"><f a=""><x path="Void"/></f></orthogonalCameraSetup>
+		<createCanvas public="1" get="inline" set="null" line="64"><f a=""><x path="Void"/></f></createCanvas>
+		<styleZero public="1" get="inline" set="null" line="73"><f a="domGL">
 	<c path="js.html.Element"/>
 	<x path="Void"/>
 </f></styleZero>
-		<px get="inline" set="null" line="75"><f a="v">
+		<px get="inline" set="null" line="82"><f a="v">
 	<x path="Int"/>
 	<c path="String"/>
 </f></px>
-		<count expr="0">
-			<x path="Int"/>
-			<meta><m n=":value"><e>0</e></m></meta>
-		</count>
-		<loop set="method" line="80"><f a="v">
+		<loop set="method" line="86"><f a="v">
 	<x path="Float"/>
 	<x path="Void"/>
 </f></loop>
-		<rotateHorizontally public="1" get="inline" set="null" line="86"><f a=""><x path="Void"/></f></rotateHorizontally>
-		<onceTraceAll public="1" get="inline" set="null" line="90"><f a=""><x path="Void"/></f></onceTraceAll>
-		<new public="1" set="method" line="22"><f a=""><x path="Void"/></f></new>
+		<rotateHorizontally public="1" get="inline" set="null" line="91"><f a=""><x path="Void"/></f></rotateHorizontally>
+		<new public="1" set="method" line="23"><f a=""><x path="Void"/></f></new>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="webglExample._WebGLExample.WebGLExample_Fields_" params="" file="src/webglExample/WebGLExample.hx" private="1" module="webglExample.WebGLExample" final="1"><main public="1" set="method" line="11" static="1"><f a=""><x path="Void"/></f></main></class>
@@ -37349,21 +37339,21 @@
 		</f>
 		<meta><m n=":impl"/></meta>
 	</positions>
-	<normals public="1" get="inline" set="null" line="39" static="1">
+	<normals public="1" get="inline" set="null" line="31" static="1">
 		<f a="this">
 			<c path="webglExample.geometry.Geometry_"/>
 			<c path="Array"><x path="Float"/></c>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</normals>
-	<uvs public="1" get="inline" set="null" line="60" static="1">
+	<uvs public="1" get="inline" set="null" line="44" static="1">
 		<f a="this">
 			<c path="webglExample.geometry.Geometry_"/>
 			<c path="Array"><x path="Float"/></c>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</uvs>
-	<extract public="1" get="inline" set="null" line="81" static="1">
+	<extract public="1" get="inline" set="null" line="56" static="1">
 		<f a="this:answer:f">
 			<c path="webglExample.geometry.Geometry_"/>
 			<c path="Array"><x path="Float"/></c>
@@ -37403,21 +37393,21 @@
 			</f>
 			<meta><m n=":impl"/></meta>
 		</positions>
-		<normals public="1" get="inline" set="null" line="39" static="1">
+		<normals public="1" get="inline" set="null" line="31" static="1">
 			<f a="this">
 				<c path="webglExample.geometry.Geometry_"/>
 				<c path="Array"><x path="Float"/></c>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</normals>
-		<uvs public="1" get="inline" set="null" line="60" static="1">
+		<uvs public="1" get="inline" set="null" line="44" static="1">
 			<f a="this">
 				<c path="webglExample.geometry.Geometry_"/>
 				<c path="Array"><x path="Float"/></c>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</uvs>
-		<extract public="1" get="inline" set="null" line="81" static="1">
+		<extract public="1" get="inline" set="null" line="56" static="1">
 			<f a="this:answer:f">
 				<c path="webglExample.geometry.Geometry_"/>
 				<c path="Array"><x path="Float"/></c>
@@ -37432,27 +37422,27 @@
 		</extract>
 	</class>
 	<class path="webglExample.geometry._GeometryParser.GeometryParser_Fields_" params="" file="src/webglExample/geometry/GeometryParser.hx" private="1" module="webglExample.geometry.GeometryParser" final="1">
-		<position public="1" expr="~/^v\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/" line="9" static="1">
+		<position public="1" expr="~/^v\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/" line="4" static="1">
 			<c path="EReg"/>
 			<meta><m n=":value"><e>~/^v\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/</e></m></meta>
 		</position>
-		<normal public="1" expr="~/^vn\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/" line="10" static="1">
+		<normal public="1" expr="~/^vn\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/" line="5" static="1">
 			<c path="EReg"/>
 			<meta><m n=":value"><e>~/^vn\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/</e></m></meta>
 		</normal>
-		<uv public="1" expr="~/^vt\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/" line="11" static="1">
+		<uv public="1" expr="~/^vt\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/" line="6" static="1">
 			<c path="EReg"/>
 			<meta><m n=":value"><e>~/^vt\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/</e></m></meta>
 		</uv>
-		<face public="1" expr="~/^f\s+(-?\d+)/(-?\d+)/(-?\d+)\s+(-?\d+)/(-?\d+)/(-?\d+)\s+(-?\d+)/(-?\d+)/(-?\d+)(?:\s+(-?\d+)/(-?\d+)/(-?\d+))?/" line="12" static="1">
+		<face public="1" expr="~/^f\s+(-?\d+)/(-?\d+)/(-?\d+)\s+(-?\d+)/(-?\d+)/(-?\d+)\s+(-?\d+)/(-?\d+)/(-?\d+)(?:\s+(-?\d+)/(-?\d+)/(-?\d+))?/" line="7" static="1">
 			<c path="EReg"/>
 			<meta><m n=":value"><e>~/^f\s+(-?\d+)/(-?\d+)/(-?\d+)\s+(-?\d+)/(-?\d+)/(-?\d+)\s+(-?\d+)/(-?\d+)/(-?\d+)(?:\s+(-?\d+)/(-?\d+)/(-?\d+))?/</e></m></meta>
 		</face>
-		<objParser public="1" set="method" line="15" static="1"><f a="src">
+		<objParser public="1" set="method" line="10" static="1"><f a="src">
 	<c path="String"/>
 	<x path="webglExample.geometry.Geometry"/>
 </f></objParser>
-		<loadOBJ public="1" set="method" line="66" static="1"><f a="url">
+		<loadOBJ public="1" set="method" line="57" static="1"><f a="url">
 	<c path="String"/>
 	<c path="js.lib.Promise"><x path="webglExample.geometry.Geometry"/></c>
 </f></loadOBJ>
@@ -37464,10 +37454,6 @@
 	<c path="String"/>
 	<c path="webglExample.geometry.Vector2"/>
 </f></fromStrings>
-		<fromResults public="1" get="inline" set="null" line="15" static="1"><f a="results">
-	<c path="Array"><c path="String"/></c>
-	<c path="webglExample.geometry.Vector2"/>
-</f></fromResults>
 		<x public="1"><x path="Float"/></x>
 		<y public="1"><x path="Float"/></y>
 		<new public="1" set="method" line="7"><f a="x:y">
@@ -37487,10 +37473,6 @@
 	<c path="String"/>
 	<c path="webglExample.geometry.Vector3"/>
 </f></fromStrings>
-		<fromResults public="1" get="inline" set="null" line="17" static="1"><f a="results">
-	<c path="Array"><c path="String"/></c>
-	<c path="webglExample.geometry.Vector3"/>
-</f></fromResults>
 		<x public="1"><x path="Float"/></x>
 		<y public="1"><x path="Float"/></y>
 		<z public="1"><x path="Float"/></z>
