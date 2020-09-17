@@ -23,8 +23,13 @@ class WebGLExample {
     public function new(){
         trace('create WebGLExample');
         trace( Browser.document.location.href );
-        hRef = Browser.document.location.href + '/';
-        
+        hRef = Browser.document.location.href;
+        if( hRef.substr( hRef.length-4, 4 ) == 'html' ){
+            var endLen = '/indexHaxe.html'.length;
+            hRef = hRef.substr( 0, hRef.length - endLen );
+        }
+        hRef += '/';
+        trace( hRef );
         createCanvas();
         renderer = new Renderer( canvasGL );
         renderer.setClearColor( 100, 149, 237 );

@@ -27,6 +27,23 @@ EReg.prototype = {
 		}
 	}
 };
+var HxOverrides = function() { };
+HxOverrides.__name__ = true;
+HxOverrides.substr = function(s,pos,len) {
+	if(len == null) {
+		len = s.length;
+	} else if(len < 0) {
+		if(pos == 0) {
+			len = s.length + len;
+		} else {
+			return "";
+		}
+	}
+	return s.substr(pos,len);
+};
+HxOverrides.now = function() {
+	return Date.now();
+};
 Math.__name__ = true;
 var Std = function() { };
 Std.__name__ = true;
@@ -1640,7 +1657,13 @@ var webglExample_WebGLExample = function() {
 	this.camera = new webglExample_Camera();
 	console.log("src/webglExample/WebGLExample.hx:24:","create WebGLExample");
 	console.log("src/webglExample/WebGLExample.hx:25:",window.document.location.href);
-	this.hRef = window.document.location.href + "/";
+	this.hRef = window.document.location.href;
+	if(HxOverrides.substr(this.hRef,this.hRef.length - 4,4) == "html") {
+		var endLen = "/indexHaxe.html".length;
+		this.hRef = HxOverrides.substr(this.hRef,0,this.hRef.length - endLen);
+	}
+	this.hRef += "/";
+	console.log("src/webglExample/WebGLExample.hx:32:",this.hRef);
 	this.canvasGL = window.document.createElement("canvas");
 	this.canvasGL.width = 800;
 	this.canvasGL.height = 600;
@@ -1664,7 +1687,7 @@ var webglExample_WebGLExample = function() {
 		return new webglExample_Mesh(gl,params[0],params[1]);
 	}).then(function(mesh) {
 		_gthis.objects.push(mesh);
-		console.log("src/webglExample/WebGLExample.hx:47:","mesh set");
+		console.log("src/webglExample/WebGLExample.hx:52:","mesh set");
 	});
 	var _gthis1 = this;
 	var gl1 = this.gl;
@@ -1694,7 +1717,7 @@ var webglExample_WebGLExample = function() {
 		var _this = _gthis1.renderer;
 		console.log("src/webglExample/Renderer.hx:24:","shader set");
 		_this.shaderProgram = shader;
-		console.log("src/webglExample/WebGLExample.hx:57:","shader setup");
+		console.log("src/webglExample/WebGLExample.hx:62:","shader setup");
 	});
 	var _this = this.camera;
 	_this.projection = new webglExample_Transformation();
@@ -1715,7 +1738,7 @@ webglExample_WebGLExample.prototype = {
 			return new webglExample_Mesh(gl,params[0],params[1]);
 		}).then(function(mesh) {
 			_gthis.objects.push(mesh);
-			console.log("src/webglExample/WebGLExample.hx:47:","mesh set");
+			console.log("src/webglExample/WebGLExample.hx:52:","mesh set");
 		});
 	}
 	,loadShader: function() {
@@ -1747,7 +1770,7 @@ webglExample_WebGLExample.prototype = {
 			var _this = _gthis.renderer;
 			console.log("src/webglExample/Renderer.hx:24:","shader set");
 			_this.shaderProgram = shader;
-			console.log("src/webglExample/WebGLExample.hx:57:","shader setup");
+			console.log("src/webglExample/WebGLExample.hx:62:","shader setup");
 		});
 	}
 	,orthogonalCameraSetup: function() {
@@ -2382,6 +2405,9 @@ webglExample_geometry_Vertex.__name__ = true;
 var $_;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $global.$haxeUID++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = m.bind(o); o.hx__closures__[m.__id__] = f; } return f; }
 $global.$haxeUID |= 0;
+if(typeof(performance) != "undefined" ? typeof(performance.now) == "function" : false) {
+	HxOverrides.now = performance.now.bind(performance);
+}
 String.__name__ = true;
 Array.__name__ = true;
 js_Boot.__toStr = ({ }).toString;
