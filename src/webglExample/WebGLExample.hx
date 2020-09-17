@@ -22,7 +22,6 @@ class WebGLExample {
     public var hRef            = '/';
     public function new(){
         trace('create WebGLExample');
-        trace( Browser.document.location.href );
         hRef = Browser.document.location.href;
         if( hRef.substr( hRef.length-4, 4 ) == 'html' ){
             var endLen = '/indexHaxe.html'.length;
@@ -42,10 +41,6 @@ class WebGLExample {
     }
     public inline
     function loadMesh(){
-        // note paths setup for github!!
-        // remove 'https://nanjizal.github.io/webgl-example' from path!!
-        
-        
         Mesh.load( gl, hRef + 'assets/sphere.obj', hRef + 'assets/diffuse.png' )
             .then( function ( mesh ) {
                 objects.push( mesh );
@@ -54,8 +49,6 @@ class WebGLExample {
     }
     public inline
     function loadShader(){
-        // note paths setup for github!!
-        // remove 'https://nanjizal.github.io/webgl-example' from path!!
         ShaderProgram.load( gl, hRef + 'shaders/basic.vert', hRef + 'shaders/basic.frag' )
              .then( function ( shader ) {
                renderer.setShader(shader);

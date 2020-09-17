@@ -1656,14 +1656,13 @@ var webglExample_WebGLExample = function() {
 	this.light = new webglExample_Light();
 	this.camera = new webglExample_Camera();
 	console.log("src/webglExample/WebGLExample.hx:24:","create WebGLExample");
-	console.log("src/webglExample/WebGLExample.hx:25:",window.document.location.href);
 	this.hRef = window.document.location.href;
 	if(HxOverrides.substr(this.hRef,this.hRef.length - 4,4) == "html") {
 		var endLen = "/indexHaxe.html".length;
 		this.hRef = HxOverrides.substr(this.hRef,0,this.hRef.length - endLen);
 	}
 	this.hRef += "/";
-	console.log("src/webglExample/WebGLExample.hx:32:",this.hRef);
+	console.log("src/webglExample/WebGLExample.hx:31:",this.hRef);
 	this.canvasGL = window.document.createElement("canvas");
 	this.canvasGL.width = 800;
 	this.canvasGL.height = 600;
@@ -1687,7 +1686,7 @@ var webglExample_WebGLExample = function() {
 		return new webglExample_Mesh(gl,params[0],params[1]);
 	}).then(function(mesh) {
 		_gthis.objects.push(mesh);
-		console.log("src/webglExample/WebGLExample.hx:52:","mesh set");
+		console.log("src/webglExample/WebGLExample.hx:47:","mesh set");
 	});
 	var _gthis1 = this;
 	var gl1 = this.gl;
@@ -1717,7 +1716,7 @@ var webglExample_WebGLExample = function() {
 		var _this = _gthis1.renderer;
 		console.log("src/webglExample/Renderer.hx:24:","shader set");
 		_this.shaderProgram = shader;
-		console.log("src/webglExample/WebGLExample.hx:62:","shader setup");
+		console.log("src/webglExample/WebGLExample.hx:55:","shader setup");
 	});
 	var _this = this.camera;
 	_this.projection = new webglExample_Transformation();
@@ -1738,7 +1737,7 @@ webglExample_WebGLExample.prototype = {
 			return new webglExample_Mesh(gl,params[0],params[1]);
 		}).then(function(mesh) {
 			_gthis.objects.push(mesh);
-			console.log("src/webglExample/WebGLExample.hx:52:","mesh set");
+			console.log("src/webglExample/WebGLExample.hx:47:","mesh set");
 		});
 	}
 	,loadShader: function() {
@@ -1770,7 +1769,7 @@ webglExample_WebGLExample.prototype = {
 			var _this = _gthis.renderer;
 			console.log("src/webglExample/Renderer.hx:24:","shader set");
 			_this.shaderProgram = shader;
-			console.log("src/webglExample/WebGLExample.hx:62:","shader setup");
+			console.log("src/webglExample/WebGLExample.hx:55:","shader setup");
 		});
 	}
 	,orthogonalCameraSetup: function() {
