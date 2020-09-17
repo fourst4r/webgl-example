@@ -22,7 +22,7 @@ class WebGLExample {
     public var hRef            = '/';
     public function new(){
         trace('create WebGLExample');
-        trace( Browser.document.location.hostname );
+        trace( Browser.document.location.href );
         hRef = Browser.document.location.href + '/';
         
         createCanvas();

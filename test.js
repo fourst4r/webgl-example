@@ -1639,7 +1639,7 @@ var webglExample_WebGLExample = function() {
 	this.light = new webglExample_Light();
 	this.camera = new webglExample_Camera();
 	console.log("src/webglExample/WebGLExample.hx:24:","create WebGLExample");
-	console.log("src/webglExample/WebGLExample.hx:25:",window.document.location.hostname);
+	console.log("src/webglExample/WebGLExample.hx:25:",window.document.location.href);
 	this.hRef = window.document.location.href + "/";
 	this.canvasGL = window.document.createElement("canvas");
 	this.canvasGL.width = 800;
