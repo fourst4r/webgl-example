@@ -1,5 +1,3 @@
-// Under development
-
 package webglExample;
 import webglExample.geometry.Geometry;
 import webglExample.geometry.GeometryParser;
@@ -44,7 +42,6 @@ class Mesh{
         var geometry = loadOBJ( modelUrl );
         var texture = Texture.load( gl, textureUrl );
         return Promise.all( [ geometry, texture ] ).then( function ( params ) {
-            trace('mesh promise all ' + params );
             return new Mesh( gl, params[ 0 ], params[ 1 ] );
         });
     }

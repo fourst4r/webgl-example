@@ -19,12 +19,17 @@ class WebGLExample {
     public var camera          = new Camera();
     public var light           = new Light();
     public var objects         = [];
+    public var hRef            = '/';
     public function new(){
         trace('create WebGLExample');
+        trace( Browser.document.location.hostname );
+        hRef = Browser.document.location.href + '/';
+        
         createCanvas();
         renderer = new Renderer( canvasGL );
         renderer.setClearColor( 100, 149, 237 );
         gl = renderer.getContext();
+        
         loadMesh();
         loadShader();
         orthogonalCameraSetup();
@@ -34,7 +39,9 @@ class WebGLExample {
     function loadMesh(){
         // note paths setup for github!!
         // remove 'https://nanjizal.github.io/webgl-example' from path!!
-        Mesh.load( gl, 'https://nanjizal.github.io/webgl-example/assets/sphere.obj', 'https://nanjizal.github.io/webgl-example/assets/diffuse.png' )
+        
+        
+        Mesh.load( gl, hRef + 'assets/sphere.obj', hRef + 'assets/diffuse.png' )
             .then( function ( mesh ) {
                 objects.push( mesh );
                 trace('mesh set');
@@ -44,7 +51,7 @@ class WebGLExample {
     function loadShader(){
         // note paths setup for github!!
         // remove 'https://nanjizal.github.io/webgl-example' from path!!
-        ShaderProgram.load( gl, 'https://nanjizal.github.io/webgl-example/shaders/basic.vert', 'https://nanjizal.github.io/webgl-example/shaders/basic.frag' )
+        ShaderProgram.load( gl, hRef + 'shaders/basic.vert', hRef + 'shaders/basic.frag' )
              .then( function ( shader ) {
                renderer.setShader(shader);
                trace('shader setup');
@@ -76,9 +83,7 @@ class WebGLExample {
     function px( v: Int ): String {
         return Std.string( v + 'px' );
     }
-    var count = 0;
     function loop ( v: Float ): Void {
-        onceTraceAll();
         renderer.render( camera, light, objects );
         rotateHorizontally();
         Browser.window.requestAnimationFrame( loop );
@@ -86,14 +91,5 @@ class WebGLExample {
     public inline
     function rotateHorizontally(){
         camera.position = camera.position.rotateY( Math.PI / 120 );
-    }
-    public inline
-    function onceTraceAll(){
-        if( count == 50 ){
-            trace( camera );
-            trace( light );
-            trace( objects );
-        } 
-        count++;
     }
 }

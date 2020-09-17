@@ -1,11 +1,6 @@
-// under development
-
 package webglExample.geometry;
 import js.lib.Promise;
 import js.html.XMLHttpRequest;
-// TODO: Needs haxifying!!
-
-// these are ok?
 var position: EReg = ~/^v\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/;
 var normal:   EReg = ~/^vn\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/;
 var uv:       EReg = ~/^vt\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/;
@@ -23,21 +18,18 @@ function objParser( src: String ) {
         var line = lines[ i ];
         // Match each line of the file against various RegEx-es
         if( position.match( line ) ){
-            positions.push( new Vector3( Std.parseFloat( position.matched(1) )
-                                       , Std.parseFloat( position.matched(2) )
-                                       , Std.parseFloat( position.matched(3) )
-                                       )
+            positions.push( Vector3.fromStrings( position.matched(1),
+                                                 position.matched(2),
+                                                 position.matched(3) )
                            );
         } else if ( normal.match( line ) ){
-            normals.push( new Vector3( Std.parseFloat( normal.matched(1) )
-                                       , Std.parseFloat( normal.matched(2) )
-                                       , Std.parseFloat( normal.matched(3) )
-                                      )
+            normals.push( Vector3.fromStrings( normal.matched(1),
+                                               normal.matched(2),
+                                               normal.matched(3) )
                         );
         } else if ( uv.match( line ) ){
-            uvs.push( new Vector2( Std.parseFloat( uv.matched(1) )
-                                 , Std.parseFloat( uv.matched(2) )
-                                 )
+            uvs.push( Vector2.fromStrings( uv.matched(1),
+                                           uv.matched(2) )
                     );
         } else if ( face.match( line ) ){
             // Add new face
@@ -48,7 +40,6 @@ function objParser( src: String ) {
                 var p0 = Std.parseInt( face.matched( i ) );
                 var p1 = Std.parseInt( face.matched( i+1 ) );
                 var p2 = Std.parseInt( face.matched( i+2 ) );
-                trace( (count++) + ',' + p0 +','+p1+','+p2);
                 var position = positions[ p0 - 1 ];
                 var uv       = uvs[ p1 - 1 ];
                 var normal   = normals[ p2 - 1 ];
@@ -68,7 +59,6 @@ function loadOBJ( url: String ) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(){
             if ( xhr.readyState == XMLHttpRequest.DONE ){
-                trace('geometryparser working');
                 resolve( objParser( xhr.responseText ) );
             }
         };

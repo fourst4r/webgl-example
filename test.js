@@ -481,6 +481,13 @@ webglExample_Light.prototype = {
 var webglExample_Mesh = function(gl,geometry,texture) {
 	var vertexCount = geometry.faces.length * 3;
 	var answer = [];
+	var positionExtract = function(answer,vertex) {
+		var v = vertex.position;
+		answer.push(v.x);
+		answer.push(v.y);
+		answer.push(v.z);
+		return answer;
+	};
 	var len = geometry.faces.length;
 	var vlen;
 	var face;
@@ -497,14 +504,18 @@ var webglExample_Mesh = function(gl,geometry,texture) {
 		while(_g2 < _g3) {
 			var j = _g2++;
 			vertex = face.vertices[j];
-			v = vertex.position;
-			answer.push(v.x);
-			answer.push(v.y);
-			answer.push(v.z);
+			positionExtract(answer,vertex);
 		}
 	}
 	this.positions = new webglExample_Vbo(gl,answer,vertexCount);
 	var answer = [];
+	var normalExtract = function(answer,vertex) {
+		var v = vertex.normal;
+		answer.push(v.x);
+		answer.push(v.y);
+		answer.push(v.z);
+		return answer;
+	};
 	var len = geometry.faces.length;
 	var vlen;
 	var face;
@@ -521,14 +532,17 @@ var webglExample_Mesh = function(gl,geometry,texture) {
 		while(_g2 < _g3) {
 			var j = _g2++;
 			vertex = face.vertices[j];
-			v = vertex.normal;
-			answer.push(v.x);
-			answer.push(v.y);
-			answer.push(v.z);
+			normalExtract(answer,vertex);
 		}
 	}
 	this.normals = new webglExample_Vbo(gl,answer,vertexCount);
 	var answer = [];
+	var uvExtract = function(answer,vertex) {
+		var v = vertex.uv;
+		answer.push(v.x);
+		answer.push(1 - v.y);
+		return answer;
+	};
 	var len = geometry.faces.length;
 	var vlen;
 	var face;
@@ -545,9 +559,7 @@ var webglExample_Mesh = function(gl,geometry,texture) {
 		while(_g2 < _g3) {
 			var j = _g2++;
 			vertex = face.vertices[j];
-			v = vertex.uv;
-			answer.push(v.x);
-			answer.push(1 - v.y);
+			uvExtract(answer,vertex);
 		}
 	}
 	this.uvs = new webglExample_Vbo(gl,answer,vertexCount);
@@ -561,7 +573,6 @@ webglExample_Mesh.load = function(gl,modelUrl,textureUrl) {
 	var geometry = webglExample_geometry_GeometryParser_loadOBJ(modelUrl);
 	var texture = webglExample_Texture.load(gl,textureUrl);
 	return Promise.all([geometry,texture]).then(function(params) {
-		console.log("src/webglExample/Mesh.hx:47:","mesh promise all " + Std.string(params));
 		return new webglExample_Mesh(gl,params[0],params[1]);
 	});
 };
@@ -826,7 +837,6 @@ webglExample_ShaderProgram.load = function(gl,vertUrl,fragUrl) {
 		xhr.open("GET",url1,true);
 		xhr.send(null);
 	})]).then(function(files) {
-		console.log("src/webglExample/ShaderProgram.hx:64:"," promise.all shaderProgram ");
 		return new webglExample_ShaderProgram(gl,files[0],files[1]);
 	});
 };
@@ -867,7 +877,6 @@ webglExample_Texture.load = function(gl,url) {
 	return new Promise(function(resolve,reject) {
 		var image = new Image();
 		image.onload = function() {
-			console.log("src/webglExample/Texture.hx:61:","resolving texture loading" + Std.string(image));
 			resolve(new webglExample_Texture(gl,image));
 		};
 		image.src = url;
@@ -1625,11 +1634,13 @@ webglExample_Vbo.prototype = {
 	}
 };
 var webglExample_WebGLExample = function() {
-	this.count = 0;
+	this.hRef = "/";
 	this.objects = [];
 	this.light = new webglExample_Light();
 	this.camera = new webglExample_Camera();
-	console.log("src/webglExample/WebGLExample.hx:23:","create WebGLExample");
+	console.log("src/webglExample/WebGLExample.hx:24:","create WebGLExample");
+	console.log("src/webglExample/WebGLExample.hx:25:",window.document.location.hostname);
+	this.hRef = window.document.location.href + "/";
 	this.canvasGL = window.document.createElement("canvas");
 	this.canvasGL.width = 800;
 	this.canvasGL.height = 600;
@@ -1646,19 +1657,19 @@ var webglExample_WebGLExample = function() {
 	this.gl = this.renderer.gl;
 	var _gthis = this;
 	var gl = this.gl;
-	var geometry = webglExample_geometry_GeometryParser_loadOBJ("https://nanjizal.github.io/webgl-example/assets/sphere.obj");
-	var texture = webglExample_Texture.load(gl,"https://nanjizal.github.io/webgl-example/assets/diffuse.png");
+	var textureUrl = this.hRef + "assets/diffuse.png";
+	var geometry = webglExample_geometry_GeometryParser_loadOBJ(this.hRef + "assets/sphere.obj");
+	var texture = webglExample_Texture.load(gl,textureUrl);
 	Promise.all([geometry,texture]).then(function(params) {
-		console.log("src/webglExample/Mesh.hx:47:","mesh promise all " + Std.string(params));
 		return new webglExample_Mesh(gl,params[0],params[1]);
 	}).then(function(mesh) {
 		_gthis.objects.push(mesh);
-		console.log("src/webglExample/WebGLExample.hx:40:","mesh set");
+		console.log("src/webglExample/WebGLExample.hx:47:","mesh set");
 	});
 	var _gthis1 = this;
 	var gl1 = this.gl;
-	var url = "https://nanjizal.github.io/webgl-example/shaders/basic.vert";
-	var url1 = "https://nanjizal.github.io/webgl-example/shaders/basic.frag";
+	var url = this.hRef + "shaders/basic.vert";
+	var url1 = this.hRef + "shaders/basic.frag";
 	Promise.all([new Promise(function(resolve,reject) {
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
@@ -1678,13 +1689,12 @@ var webglExample_WebGLExample = function() {
 		xhr.open("GET",url1,true);
 		xhr.send(null);
 	})]).then(function(files) {
-		console.log("src/webglExample/ShaderProgram.hx:64:"," promise.all shaderProgram ");
 		return new webglExample_ShaderProgram(gl1,files[0],files[1]);
 	}).then(function(shader) {
 		var _this = _gthis1.renderer;
 		console.log("src/webglExample/Renderer.hx:24:","shader set");
 		_this.shaderProgram = shader;
-		console.log("src/webglExample/WebGLExample.hx:50:","shader setup");
+		console.log("src/webglExample/WebGLExample.hx:57:","shader setup");
 	});
 	var _this = this.camera;
 	_this.projection = new webglExample_Transformation();
@@ -1698,21 +1708,21 @@ webglExample_WebGLExample.prototype = {
 	loadMesh: function() {
 		var _gthis = this;
 		var gl = this.gl;
-		var geometry = webglExample_geometry_GeometryParser_loadOBJ("https://nanjizal.github.io/webgl-example/assets/sphere.obj");
-		var texture = webglExample_Texture.load(gl,"https://nanjizal.github.io/webgl-example/assets/diffuse.png");
+		var textureUrl = this.hRef + "assets/diffuse.png";
+		var geometry = webglExample_geometry_GeometryParser_loadOBJ(this.hRef + "assets/sphere.obj");
+		var texture = webglExample_Texture.load(gl,textureUrl);
 		Promise.all([geometry,texture]).then(function(params) {
-			console.log("src/webglExample/Mesh.hx:47:","mesh promise all " + Std.string(params));
 			return new webglExample_Mesh(gl,params[0],params[1]);
 		}).then(function(mesh) {
 			_gthis.objects.push(mesh);
-			console.log("src/webglExample/WebGLExample.hx:40:","mesh set");
+			console.log("src/webglExample/WebGLExample.hx:47:","mesh set");
 		});
 	}
 	,loadShader: function() {
 		var _gthis = this;
 		var gl = this.gl;
-		var url = "https://nanjizal.github.io/webgl-example/shaders/basic.vert";
-		var url1 = "https://nanjizal.github.io/webgl-example/shaders/basic.frag";
+		var url = this.hRef + "shaders/basic.vert";
+		var url1 = this.hRef + "shaders/basic.frag";
 		Promise.all([new Promise(function(resolve,reject) {
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function() {
@@ -1732,13 +1742,12 @@ webglExample_WebGLExample.prototype = {
 			xhr.open("GET",url1,true);
 			xhr.send(null);
 		})]).then(function(files) {
-			console.log("src/webglExample/ShaderProgram.hx:64:"," promise.all shaderProgram ");
 			return new webglExample_ShaderProgram(gl,files[0],files[1]);
 		}).then(function(shader) {
 			var _this = _gthis.renderer;
 			console.log("src/webglExample/Renderer.hx:24:","shader set");
 			_this.shaderProgram = shader;
-			console.log("src/webglExample/WebGLExample.hx:50:","shader setup");
+			console.log("src/webglExample/WebGLExample.hx:57:","shader setup");
 		});
 	}
 	,orthogonalCameraSetup: function() {
@@ -1773,12 +1782,6 @@ webglExample_WebGLExample.prototype = {
 		return Std.string(v + "px");
 	}
 	,loop: function(v) {
-		if(this.count == 50) {
-			console.log("src/webglExample/WebGLExample.hx:93:",this.camera);
-			console.log("src/webglExample/WebGLExample.hx:94:",this.light);
-			console.log("src/webglExample/WebGLExample.hx:95:",this.objects);
-		}
-		this.count++;
 		var _this = this.renderer;
 		var camera = this.camera;
 		var light = this.light;
@@ -2165,14 +2168,6 @@ webglExample_WebGLExample.prototype = {
 		output.fields[15] = sum;
 		this.camera.position = output;
 	}
-	,onceTraceAll: function() {
-		if(this.count == 50) {
-			console.log("src/webglExample/WebGLExample.hx:93:",this.camera);
-			console.log("src/webglExample/WebGLExample.hx:94:",this.light);
-			console.log("src/webglExample/WebGLExample.hx:95:",this.objects);
-		}
-		this.count++;
-	}
 };
 function webglExample_WebGLExample_main() {
 	new webglExample_WebGLExample();
@@ -2195,6 +2190,13 @@ webglExample_geometry_Geometry.vertexCount = function(this1) {
 };
 webglExample_geometry_Geometry.positions = function(this1) {
 	var answer = [];
+	var positionExtract = function(answer,vertex) {
+		var v = vertex.position;
+		answer.push(v.x);
+		answer.push(v.y);
+		answer.push(v.z);
+		return answer;
+	};
 	var len = this1.faces.length;
 	var vlen;
 	var face;
@@ -2211,16 +2213,20 @@ webglExample_geometry_Geometry.positions = function(this1) {
 		while(_g2 < _g3) {
 			var j = _g2++;
 			vertex = face.vertices[j];
-			v = vertex.position;
-			answer.push(v.x);
-			answer.push(v.y);
-			answer.push(v.z);
+			positionExtract(answer,vertex);
 		}
 	}
 	return answer;
 };
 webglExample_geometry_Geometry.normals = function(this1) {
 	var answer = [];
+	var normalExtract = function(answer,vertex) {
+		var v = vertex.normal;
+		answer.push(v.x);
+		answer.push(v.y);
+		answer.push(v.z);
+		return answer;
+	};
 	var len = this1.faces.length;
 	var vlen;
 	var face;
@@ -2237,16 +2243,19 @@ webglExample_geometry_Geometry.normals = function(this1) {
 		while(_g2 < _g3) {
 			var j = _g2++;
 			vertex = face.vertices[j];
-			v = vertex.normal;
-			answer.push(v.x);
-			answer.push(v.y);
-			answer.push(v.z);
+			normalExtract(answer,vertex);
 		}
 	}
 	return answer;
 };
 webglExample_geometry_Geometry.uvs = function(this1) {
 	var answer = [];
+	var uvExtract = function(answer,vertex) {
+		var v = vertex.uv;
+		answer.push(v.x);
+		answer.push(1 - v.y);
+		return answer;
+	};
 	var len = this1.faces.length;
 	var vlen;
 	var face;
@@ -2263,9 +2272,7 @@ webglExample_geometry_Geometry.uvs = function(this1) {
 		while(_g2 < _g3) {
 			var j = _g2++;
 			vertex = face.vertices[j];
-			v = vertex.uv;
-			answer.push(v.x);
-			answer.push(1 - v.y);
+			uvExtract(answer,vertex);
 		}
 	}
 	return answer;
@@ -2305,11 +2312,19 @@ function webglExample_geometry_GeometryParser_objParser(src) {
 		var i = _g++;
 		var line = lines[i];
 		if(webglExample_geometry_GeometryParser_position.match(line)) {
-			positions.push(new webglExample_geometry_Vector3(parseFloat(webglExample_geometry_GeometryParser_position.matched(1)),parseFloat(webglExample_geometry_GeometryParser_position.matched(2)),parseFloat(webglExample_geometry_GeometryParser_position.matched(3))));
+			var xs = webglExample_geometry_GeometryParser_position.matched(1);
+			var ys = webglExample_geometry_GeometryParser_position.matched(2);
+			var zs = webglExample_geometry_GeometryParser_position.matched(3);
+			positions.push(new webglExample_geometry_Vector3(parseFloat(xs),parseFloat(ys),parseFloat(zs)));
 		} else if(webglExample_geometry_GeometryParser_normal.match(line)) {
-			normals.push(new webglExample_geometry_Vector3(parseFloat(webglExample_geometry_GeometryParser_normal.matched(1)),parseFloat(webglExample_geometry_GeometryParser_normal.matched(2)),parseFloat(webglExample_geometry_GeometryParser_normal.matched(3))));
+			var xs1 = webglExample_geometry_GeometryParser_normal.matched(1);
+			var ys1 = webglExample_geometry_GeometryParser_normal.matched(2);
+			var zs1 = webglExample_geometry_GeometryParser_normal.matched(3);
+			normals.push(new webglExample_geometry_Vector3(parseFloat(xs1),parseFloat(ys1),parseFloat(zs1)));
 		} else if(webglExample_geometry_GeometryParser_uv.match(line)) {
-			uvs.push(new webglExample_geometry_Vector2(parseFloat(webglExample_geometry_GeometryParser_uv.matched(1)),parseFloat(webglExample_geometry_GeometryParser_uv.matched(2))));
+			var xs2 = webglExample_geometry_GeometryParser_uv.matched(1);
+			var ys2 = webglExample_geometry_GeometryParser_uv.matched(2);
+			uvs.push(new webglExample_geometry_Vector2(parseFloat(xs2),parseFloat(ys2)));
 		} else if(webglExample_geometry_GeometryParser_face.match(line)) {
 			var vertices = [];
 			var i1 = 1;
@@ -2317,7 +2332,6 @@ function webglExample_geometry_GeometryParser_objParser(src) {
 				var p0 = Std.parseInt(webglExample_geometry_GeometryParser_face.matched(i1));
 				var p1 = Std.parseInt(webglExample_geometry_GeometryParser_face.matched(i1 + 1));
 				var p2 = Std.parseInt(webglExample_geometry_GeometryParser_face.matched(i1 + 2));
-				console.log("src/webglExample/geometry/GeometryParser.hx:51:",count++ + "," + p0 + "," + p1 + "," + p2);
 				var position = positions[p0 - 1];
 				var uv = uvs[p1 - 1];
 				var normal = normals[p2 - 1];
@@ -2335,7 +2349,6 @@ function webglExample_geometry_GeometryParser_loadOBJ(url) {
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
 			if(xhr.readyState == 4) {
-				console.log("src/webglExample/geometry/GeometryParser.hx:71:","geometryparser working");
 				resolve(webglExample_geometry_GeometryParser_objParser(xhr.responseText));
 			}
 		};
@@ -2349,10 +2362,7 @@ var webglExample_geometry_Vector2 = function(x,y) {
 };
 webglExample_geometry_Vector2.__name__ = true;
 webglExample_geometry_Vector2.fromStrings = function(xs,ys) {
-	return new webglExample_geometry_Vector2(Std.parseInt(xs),Std.parseInt(ys));
-};
-webglExample_geometry_Vector2.fromResults = function(results) {
-	return new webglExample_geometry_Vector2(Std.parseInt(results[1]),Std.parseInt(results[2]));
+	return new webglExample_geometry_Vector2(parseFloat(xs),parseFloat(ys));
 };
 var webglExample_geometry_Vector3 = function(x,y,z) {
 	this.x = x;
@@ -2361,10 +2371,7 @@ var webglExample_geometry_Vector3 = function(x,y,z) {
 };
 webglExample_geometry_Vector3.__name__ = true;
 webglExample_geometry_Vector3.fromStrings = function(xs,ys,zs) {
-	return new webglExample_geometry_Vector3(Std.parseInt(xs),Std.parseInt(ys),Std.parseInt(zs));
-};
-webglExample_geometry_Vector3.fromResults = function(results) {
-	return new webglExample_geometry_Vector3(Std.parseInt(results[1]),Std.parseInt(results[2]),Std.parseInt(results[3]));
+	return new webglExample_geometry_Vector3(parseFloat(xs),parseFloat(ys),parseFloat(zs));
 };
 var webglExample_geometry_Vertex = function(position,normal,uv) {
 	this.position = position;

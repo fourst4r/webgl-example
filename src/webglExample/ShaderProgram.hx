@@ -61,7 +61,6 @@ class ShaderProgram{
     function load( gl: RenderingContext, vertUrl: String, fragUrl: String ) {
         return Promise.all( [ loadFile( vertUrl ), loadFile( fragUrl ) ] ).then(
             function ( files ) {
-                trace(' promise.all shaderProgram ');
                 return new ShaderProgram( gl, files[ 0 ], files[ 1 ] );
             });
     }
